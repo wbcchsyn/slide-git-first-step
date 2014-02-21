@@ -1,0 +1,188 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}<1-4>[t]{branch (一覧、作成)}{branch を使用する}
+
+  branch の一覧表示、作成
+  \vspace{4ex}
+
+  \onslide*<1>{
+    現在の branch を確認
+    \vspace{2ex}
+
+    \$ git branch
+
+    \code{* master}
+  }
+
+  \onslide*<2>{
+    新 branch の作成
+    \vspace{2ex}
+
+    \$ git branch develop
+  }
+
+  \onslide*<3>{
+    現在の branch を確認
+    \vspace{2ex}
+
+    \$ git branch
+
+    \code{
+      * master
+
+      \onslide<99>{* }develop
+    }
+  }
+
+
+  \onslide*<4>{
+    repository の更新を行ってみる
+    \vspace{2ex}
+
+    \$ git add c
+
+    \$ git commit -m 'Add c.'
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{branch を使用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<8->{c} d
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+
+        \onslide<12->{
+          \node (c3) [commit, rectangle split, rectangle split parts=2] at (0em, 14ex) {
+            \commitmessage{Add c.}
+            \nodepart{second}{\onslide<12->{master{\HEAD}}}
+          };
+        }
+
+        \onslide*<10-11>{
+          \node (c3) [commit, rectangle split, rectangle split parts=1] at (0em, 14ex) {
+            \commitmessage{Add c.}
+          };
+        }
+
+        \node (c2) [commit, rectangle split, rectangle split parts=2] at (0em, 6ex) {
+          \commitmessage{Rename a to d and delete b.}
+          \nodepart{second}{\onslide*<-11>{master{\HEAD}} \onslide*<5->{develop}}
+        };
+
+        \node (c1) [commit] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+        };
+
+        \onslide<10->{\draw (c2) -- (c3);}
+        \draw (c1) -- (c2);
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ git branch
+    \vspace{2ex}
+
+    \onslide*<2>{現在の branch 一覧を表示}
+    \onslide*<3>{
+      \code{* master}
+
+      * は HEAD が向いている branch の印
+    }
+  }
+
+  \onslide*<4-5>{
+    \$ git branch develop
+    \vspace{2ex}
+
+    HEAD と同じ commit を指す branch を作成
+  }
+
+  \onslide*<6>{
+    \$ git branch
+    \vspace{2ex}
+
+    \code{
+      * master
+
+      \onslide<99>{* }develop
+    }
+  }
+
+  \onslide*<7-8>{
+    \$ git add c
+    \vspace{2ex}
+
+    c を cached へコピー
+  }
+
+  \onslide*<9-13>{
+    \$ git commit -m 'Add c.'
+    \vspace{2ex}
+
+    \onslide*<9-10>{cached を取り込み、message を添えて、現在の HEAD を親とする commit を作成}
+    \onslide*<11-12>{
+      HEAD が branch を指している時は
+
+      その branch の向き先を新しい commit へ変更
+    }
+    \onslide*<13>{HEAD が指しているのは master だけなので、develop は放置}
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git branch コマンド補足 (一覧、作成)}{branch を使用する}
+
+  \begin{itemize}
+  \item git branch [-a]
+
+    で現在の branch 一覧を表示
+
+    -a オプションをつけると、remote branch\footnote{後述} も表示する
+    \vspace{2ex}
+
+  \item git branch \textit{branch-name} [\textit{start-point}]
+
+    で start-point をさす branch を作成
+
+    start-point は branch, HEAD, ハッシュ値\footnote{後述} 等で指定
+
+    start-point のデフォルト値は HEAD
+  \end{itemize}
+
+\end{frame}

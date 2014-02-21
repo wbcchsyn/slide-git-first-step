@@ -1,0 +1,206 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{reset}{過去の履歴を活用する}
+  branch と HEAD を一度に切り替える
+
+  (良く、過去のバージョンに戻すのに使用)
+  \vspace{4ex}
+
+  \onslide*<1>{
+    戻したいバージョン (例えば、``Add e.'' という commit ) の commit のハッシュ値を確認
+    \vspace{2ex}
+
+    \$ git log {\dhyphen}graph
+    \vspace{2ex}
+
+    ...
+    \vspace{2ex}
+
+    (commit のハッシュ値 commit する度に異なるので注意)
+
+    今回は 365850a9b09bb6fbcfc3f762b630380053b46575 とする
+  }
+
+  \onslide*<2>{
+    準備
+    \vspace{2ex}
+
+    \$ git branch for\_soft
+
+    \$ git branch for\_mixed
+
+    \$ git branch for\_hard
+  }
+
+  \onslide*<3>{
+    HEAD だけ古いバージョンに戻す
+    \vspace{2ex}
+
+    \$ git checkout for\_soft
+
+    \$ git reset {\dhyphen}soft 3658\footnote{重複が無ければ、hash 値は先頭 4文字以上で大丈夫}
+  }
+
+  \onslide*<4>{
+    HEAD と cached を古いバージョンに戻す
+    \vspace{2ex}
+
+    \$ git checkout for\_mixed
+
+    \$ git reset {\dhyphen}mixed 3658
+  }
+
+  \onslide*<5>{
+    HEAD, cached, workspace の全てを古いバージョンに戻す
+    \vspace{2ex}
+
+    \$ git checkout for\_hard
+
+    \$ git reset {\dhyphen}hard 3658
+  }
+
+  \onslide*<6>{
+    テスト環境後始末
+    \vspace{2ex}
+
+    \$ git checkout master
+
+    \$ git branch -d for\_soft for\_mixed for\_hard
+  }
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{過去の履歴を活用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<1-13,15>{c}
+        d e
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<1-9,12-13,15>{c}
+        d e
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{leftrepository}{repository}
+        \node (c5) [commit, rectangle split, rectangle split parts=3] at (7em, 11ex){
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master\onslide*<-3,15>{\HEAD}\onslide*<2-5>{ for\_soft}\onslide*<4-5>{\HEAD}\onslide*<2-9>{ for\_mixed}\onslide*<8-9>{\HEAD}\onslide*<2-13>{ for\_hard}\onslide*<12-13>{\HEAD}}
+        };
+
+        \onslide<6-14>{
+          \node (c4) [commit, rectangle split, rectangle split parts=3] at (9em, 0ex){
+            \commitmessage{Add e.}
+            \nodepart{second}{d e}
+            \nodepart{third}{for\_soft\onslide*<-7>{\HEAD} \onslide*<10->{for\_mixed\onslide*<-11>{\HEAD}} \onslide*<14>{for\_hard{\HEAD}}}
+          };
+        }
+
+        \onslide*<1-5,15>{
+          \node (c4) [commit, rectangle split, rectangle split parts=2] at (9em, -1ex){
+            \commitmessage{Add e.}
+            \nodepart{second}{d e}
+          };
+        }
+
+        \node (c3) [commit, rectangle split, rectangle split parts=1] at (0em, -2ex){
+          \commitmessage{Add c.}
+        };
+        \draw (c4) -- (c5);
+        \draw (c3) -- (c5);
+      \end{leftrepository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ git branch for\_soft
+
+    \$ git branch for\_mixed
+
+    \$ git branch for\_hard
+  }
+
+  \onslide*<3-4>{\$ git checkout for\_soft}
+  \onslide*<5-6>{
+    \$ git reset {\dhyphen}soft 3658
+    \vspace{2ex}
+
+    HEAD だけ変更する
+
+    (HEAD が branch を指している時は branch を変更する)
+  }
+
+  \onslide*<7-8>{\$ git checkout for\_mixed}
+  \onslide*<9-10>{
+    \$ git reset {\dhyphen}mixed 3658
+    \vspace{2ex}
+
+    cached と HEAD を変更する
+  }
+
+  \onslide*<11-12>{\$ git checkout for\_hard}
+  \onslide*<13-14>{
+    \$ git reset {\dhyphen}hard 3658
+    \vspace{2ex}
+
+    workspace, cached, HEAD を変更する
+  }
+
+  \onslide*<15>{
+    \$ git checkout master
+
+    \$ git branch -d for\_soft for\_mixed for\_hard
+  }
+\end{frame}
+
+\begin{frame}[t]{git reset コマンド補足}{過去の履歴を活用する}
+
+  \begin{itemize}
+  \item git reset [{\dhyphen}soft {\vbar} {\dhyphen}mixed {\vbar} {\dhyphen}hard] [\textit{comit}]
+
+    で HEAD, branch の切り替えと (オプションによって) workspace や cached の変更を実施
+
+    オプションのデフォルトは {\dhyphen}mixed、
+
+    commit は branch, HEAD, ハッシュ値等で指定
+
+    commit のデフォルトは HEAD
+    \vspace{2ex}
+
+  \item git reset とだけ実行すると、HEAD は変わらず cached が HEAD と同じ状態になる
+
+    間違えて git add してしまった場合などに使用
+    \vspace{2ex}
+
+  \item HEAD を切り替えるので、git reset は git checkout と少し似ている
+
+    違いは、branch も一緒に切り替えるかどうか
+  \end{itemize}
+
+\end{frame}

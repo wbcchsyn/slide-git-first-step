@@ -1,0 +1,223 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{衝突 (一旦停止)}{更新が競合したら}
+
+  merge を一旦停止して、解決してから　再 merge
+  \vspace{4ex}
+
+  \onslide*<1>{
+    準備
+    \vspace{2ex}
+
+    \$ cd \~{}/local\_rep
+
+    \$ git branch conflict1
+
+    \$ git branch conflict2
+  }
+
+  \onslide*<2>{
+    conflict1 で更新
+    \vspace{2ex}
+
+    \$ git checkout conflict1
+
+    \$ echo ``conflict1'' {\textgreater}{\textgreater} f
+
+    \$ git add f
+
+    \$ git commit -m 'Update 1.'
+  }
+
+  \onslide*<3>{
+    conflict2 で更新
+    \vspace{2ex}
+
+    \$ git checkout conflict2
+
+    \$ echo ``conflict2'' {\textgreater}{\textgreater} f
+
+    \$ git add f
+
+    \$ git commit -m 'Update 2.'
+  }
+
+  \onslide*<4>{
+    conflict2 で conflict1 と merge (衝突)
+    \vspace{2ex}
+
+    \$ git merge conflict1
+  }
+
+  \onslide*<5>{
+    merge を一旦停止
+    \vspace{2ex}
+
+    \$ git merge {\dhyphen}abort
+  }
+
+  \onslide*<6>{
+    衝突しない様に編集、commit してから再度 merge
+    \vspace{2ex}
+
+    \$ vi f
+
+    \$ git add f
+
+    \$ git commit -m 'Escape conflict.'
+
+    \$ git merge conflict1
+  }
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{更新が競合したら}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e
+        \alert<8-9>{f}
+        g h i
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e
+        \alert<8-9>{f}
+        g h i
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \onslide<14->{
+          \node (c13) [commit, rectangle split, rectangle split parts=2] at (3em, 14ex){
+            \commitmessage{Merge bra...}
+            \nodepart{second}{conflict2}
+          };
+        }
+
+        \onslide*<14->{
+          \node (c12) [commit, rectangle split, rectangle split parts=1] at (3em, 8ex){
+            \commitmessage{Escape conflict.}
+          };
+        }
+
+        \onslide*<12-13>{
+          \node (c12) [commit, rectangle split, rectangle split parts=2] at (3em, 10ex){
+            \commitmessage{Escape conflict.}
+            \nodepart{second}{conflict2}
+          };
+        }
+
+        \onslide*<6-11>{
+          \node (c11) [commit, rectangle split, rectangle split parts=2] at (3em, 6ex){
+            \commitmessage{Update 2.}
+            \nodepart{second}{conflict2}
+          };
+        }
+
+        \onslide*<12->{
+          \node (c11) [commit, rectangle split, rectangle split parts=1] at (3em, 4ex){
+            \commitmessage{Update 2.}
+          };
+        }
+
+        \onslide*<4->{
+          \node (c10) [commit, rectangle split, rectangle split parts=2] at (-3em, 6ex){
+            \commitmessage{Update 1.}
+            \nodepart{second}{conflict1}
+          };
+        }
+
+        \node (c9) [commit, rectangle split, rectangle split parts=1] at (0em, 0ex){
+          \commitmessage{Merge remote-tracking branch ...}
+        };
+
+        \onslide*<14->{\draw (c12) -- (c13);}
+        \onslide*<14->{\draw (c10) -- (c13);}
+        \onslide*<12->{\draw (c11) -- (c12);}
+        \onslide*<6->{\draw (c9) -- (c11);}
+        \onslide*<4->{\draw (c9) -- (c10);}
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ cd \~{}/local\_rep
+
+    \$ git branch conflict1
+
+    \$ git branch conflict2
+  }
+
+  \onslide*<3-4>{
+    \$ git checkout conflict1
+
+    \$ echo ``conflict1'' {\textgreater}{\textgreater} f
+
+    \$ git add f
+
+    \$ git commit -m 'Update1'
+  }
+
+  \onslide*<5-6>{
+    \$ git checkout conflict2
+
+    \$ echo ``conflict2'' {\textgreater}{\textgreater} f
+
+    \$ git add f
+
+    \$ git commit -m 'Update2'
+  }
+
+  \onslide*<7-8>{
+    \$ git merge conflict1
+
+    workspace に無理矢理両方の更新を適用した状態
+  }
+
+  \onslide*<9-10>{
+    \$ git merge {\dhyphen}abort
+
+    前回の git merge を行う前の状態に戻す
+  }
+
+  \onslide*<11-12>{
+    \$ vi f
+
+    \$ git add f
+
+    \$ git commit -m 'Escape conflict.'
+
+    conflict を起こさないように f を修正
+  }
+
+  \onslide*<13-14>{
+    \$ git merge conflict1
+
+    merge 成功
+  }
+\end{frame}

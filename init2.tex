@@ -1,0 +1,64 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{init (リモート)}{使ってみる}
+
+  remote repository を用意する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    remote repository の作成
+    \vspace{2ex}
+
+    \$ mkdir \~{}/remote\_rep
+
+    \$ cd \~{}/remote\_rep
+
+    \$ git init {\dhyphen}bare
+  }
+
+  \onslide*<2>{
+    remote repository のエイリアス作成
+    \vspace{2ex}
+
+    \$ cd \~{}/local\_rep
+
+    \$ git remote add origin \~{}/remote\_rep
+  }
+\end{frame}
+
+
+\begin{frame}[t]{git init コマンド補足 (リモート)}{使ってみる}
+
+  \begin{itemize}
+  \item 多くの git server では URI を ssh や https で指定するが
+
+    それはネットワーク的な問題
+
+    repository 自体はこの用法で作成している事も多い
+    \vspace{2ex}
+
+  \item この方法で作成した remote repository は
+
+    workspace が無いので
+
+    普通の local repository としては使用不可
+
+    その他、git の各種デフォルト設定が異なっている
+  \end{itemize}
+
+\end{frame}

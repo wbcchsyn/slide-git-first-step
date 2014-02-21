@@ -1,0 +1,133 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{checkout}{branch を使用する}
+
+  HEAD の切り替えと、会わせて workspace と cached の変更
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace のファイル確認
+    \vspace{2ex}
+
+    \$ ls
+
+    \code{c d}
+  }
+
+  \onslide*<2>{
+    HEAD の切り替え実施
+    \vspace{2ex}
+
+    \$ git checkout develop
+  }
+
+  \onslide*<3>{
+    workspace のファイル再確認
+    \vspace{2ex}
+
+    \$ ls
+
+    \code{d}
+  }
+
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{branch を使用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<-5>{c} d
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<-5>{c} d
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c3) [commit, rectangle split, rectangle split parts=3] at (0em, 10ex) {
+          \commitmessage{Add c.}
+          \nodepart{second}{c d}
+          \nodepart{third}{master\onslide*<-3>{\HEAD}}
+        };
+
+        \node (c2) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Rename a to d and delete b.}
+          \nodepart{second}{d}
+          \nodepart{third}{develop\onslide*<4->{\HEAD}}
+        };
+
+        \draw (c2) -- (c3);
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ ls
+    \vspace{2ex}
+
+    \code{c d}
+  }
+
+  \onslide*<3-6>{
+    \$ git checkout develop
+    \vspace{2ex}
+
+    \onslide*<3-4>{HEAD のリンクの向き先を develop に変更}
+    \onslide*<5-6>{あわせて、workspace や cached に新旧 HEAD の差分も適用}
+  }
+
+  \onslide*<7>{
+    \$ ls
+    \vspace{2ex}
+
+    \code{d}
+  }
+\end{frame}
+
+
+\begin{frame}[t]{git checkout コマンド補足}{branch を使用する}
+
+  \begin{itemize}
+  \item git checkout \textit{commit}
+
+    で HEAD の commit へ切り替え
+
+    workspace, cached も会わせて変更
+
+    commit は branch, tag\footnote{後述}, ハッシュ値\footnote{後述}等で指定
+    \vspace{2ex}
+
+  \item リリース時以外は HEAD はどこかの branch を指している状態にすると良い
+    \vspace{2ex}
+
+  \item workspace や cached が clean でない場合\footnote{未 commit のファイルがある場合}は
+
+    情報が失われる可能性があるので注意
+  \end{itemize}
+
+\end{frame}

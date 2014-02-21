@@ -1,0 +1,169 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}<1-3>[t]{branch (削除)}{branch を使用する}
+
+  既存の branch を削除
+  \vspace{4ex}
+
+  \onslide*<1>{
+    現在の branch 一覧
+    \vspace{2ex}
+
+    \$ git branch
+
+    \code{
+      \onslide<99>{* }develop
+
+      * master
+    }
+  }
+
+  \onslide*<2>{
+    branch 削除
+    \vspace{2ex}
+
+    \$ git branch -d develop
+  }
+
+  \onslide*<3>{
+    現在の branch 一覧
+    \vspace{2ex}
+
+    \$ git branch
+
+    \code{
+      * master
+    }
+  }
+
+\end{frame}
+
+\begin{frame}<1-5>[t]{中で起きている事}{branch を使用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{leftrepository}{repository}
+        \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, 14ex){
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{master{\HEAD}}
+        };
+
+        \onslide*<3->{
+          \node (c4) [commit, rectangle split, rectangle split parts=1] at (5em, 6.5ex){
+            \commitmessage{Add e.}
+          };
+        }
+
+        \onslide*<-3>{
+          \node (c4) [commit, rectangle split, rectangle split parts=2] at (5em, 6ex){
+            \commitmessage{Add e.}
+            \nodepart{second}{develop}
+          };
+        }
+
+        \node (c3) [commit, rectangle split, rectangle split parts=1] at (0em, 6.5ex){
+          \commitmessage{Add c.}
+        };
+
+        \node (c2) [commit, rectangle split, rectangle split parts=1] at (0em, 0ex){
+          \commitmessage{Rename a to d and delete b.}
+        };
+
+        \draw (c4) -- (c5);
+        \draw (c3) -- (c5);
+        \draw (c2) -- (c4);
+        \draw (c2) -- (c3);
+      \end{leftrepository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ git branch
+    \vspace{2ex}
+
+    \code{
+      \onslide<99>{* }develop
+
+      * master
+    }
+  }
+
+  \onslide*<3-4>{
+    \$ git branch -d develop
+    \vspace{2ex}
+
+    develop branch を削除
+
+    (commit は消えない)
+  }
+
+  \onslide*<5>{
+    \$ git branch
+    \vspace{2ex}
+
+    \code{
+      * master
+    }
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{branch (削除)}{branch を使用する}
+
+  \begin{itemize}
+  \item git branch -d \textit{branch1} [\textit{branch2} [\textit{branch3}] ...]
+
+    で複数 branch の削除が可能
+    \vspace{2ex}
+
+  \item branch を削除しても、commit は消えない
+     \vspace{2ex}
+
+  \item branch を削除すると、その commit が
+
+    見つけにくくなる場合がある\footnote{後述}
+
+    そのような場合、誤操作防止の為に
+
+    git branch -d はエラーとなる
+    \vspace{2ex}
+
+  \item git branch -D を使用すると、上記の場合でも
+
+    branch の強制削除可能
+  \end{itemize}
+
+\end{frame}

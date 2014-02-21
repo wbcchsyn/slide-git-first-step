@@ -1,0 +1,119 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{log}{過去の履歴を活用する}
+
+  過去の履歴を閲覧
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ git log {\dhyphen}graph
+    \vspace{2ex}
+
+    \code{
+      {\scriptsize
+        *~~~commit~86ba5efc1bce4f65f517eb80a3cc5c21113bc637
+
+        {\vbar}{\bslash}~~Merge:~ac24086~365850a
+
+        {\vbar}~{\vbar}~Author:~Your~Name~{\textless}your@address{\textgreater}
+
+        {\vbar}~{\vbar}~Date:~~~Wed~Jan~1~02:42:46~2014~+0900
+
+        {\vbar}~{\vbar}
+
+        {\vbar}~{\vbar}~~~~~Merge~branch~'develop'
+
+        {\vbar}~{\vbar}
+
+        {\vbar}~*~commit~365850a9b09bb6fbcfc3f762b630380053b46575
+
+        {\vbar}~{\vbar}~Author:~Your~Name~{\textless}your@address{\textgreater}
+
+        {\vbar}~{\vbar}~Date:~~~Wed~Jan~1~02:42:32~2014~+0900
+
+        {\vbar}~{\vbar}
+
+        {\vbar}~{\vbar}~~~~~Add~e.
+
+        {\vbar}~{\vbar}
+
+        ...
+      }
+    }
+  }
+
+  \onslide*<3>{git log は less を使用しているので、長い場合は j,k で上下移動、q で終了}
+
+  \onslide*<4-6>{
+    ---
+
+    \code{
+      commit~86ba5efc1bce4f65f517eb80a3cc5c21113bc637
+
+      Merge:~ac24086~365850a
+
+      Author:~Your~Name~{\textless}your@address{\textgreater}
+
+      Date:~~~Wed~Jan~1~02:42:46~2014~+0900
+    \vspace{2ex}
+
+    Merge~branch~'develop'
+    }
+
+    ---
+    \vspace{2ex}
+
+    \onslide*<4>{これが一つの commit}
+    \onslide*<5>{
+      ``commit'' の横に書いてあるのが、その commit のハッシュ値
+
+      (リンクでは無い、commit の本当の名前として使用)
+    }
+    \onslide*<6>{最後が commit message}
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git log コマンド補足}{過去の履歴を活用する}
+
+  \begin{itemize}
+  \item git log {\dhyphen}graph [\textit{commit}]
+
+    で commit の先祖を表示
+
+    commit は branch, HEAD, ハッシュ値等で指定
+
+    commit のデフォルトは HEAD
+    \vspace{2ex}
+
+  \item ハッシュ値はその commit の本名の要な物
+
+    git branch や git checkout で使用可能
+
+    (自信が無い場合は、git checkout で commit のハッシュ値を指定する事はやめた方が無難)
+    \vspace{2ex}
+
+  \item git log で簡単に調べられるのは各 branch やその先祖
+
+    例えば、現在の最新状態の branch を削除すると最新 commit を見つける事が困難になる
+
+    (git branch -d でエラーが出るのはそのような場合)
+  \end{itemize}
+
+\end{frame}

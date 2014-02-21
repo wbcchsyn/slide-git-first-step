@@ -1,0 +1,156 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{add, commit}{使ってみる}
+
+  repository にファイル、ディレクトリを追加する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ touch a b c
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add a b
+  }
+
+  \onslide*<3>{
+    cached を repository に反映
+    \vspace{2ex}
+
+    \$ git commit -m 'Add a and b.'
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<3->{a b c}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<5->{a b}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \onslide<8->{
+          \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+            \nodepart{third}{master\onslide*<9->{{\HEAD}}}
+          };
+        }
+
+        \onslide*<7>{
+          \node (c1) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+          };
+        }
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ touch a b c
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add a b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+
+  \onslide*<6->{
+    \$ git commit -m 'Add a and b.'
+    \vspace{2ex}
+
+    \onslide*<-7>{cached を取り込み、message を添えて commit を作成}
+    \onslide*<8>{
+      また、初回 commit 時のみ master branchを作成
+
+      (branch: commit へのリンクの様な物)
+    }
+    \onslide*<9>{
+      最初、HEAD は master へ向いている
+
+      (HEAD: repository 内の現在の commit を指すリンクの様な物)
+
+      (この場合、HEAD はリンクのリンクとなる)
+    }
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git add コマンド補足}{使ってみる}
+
+  \begin{itemize}
+  \item git add \textit{path1} [\textit{path2} [\textit{path3} ...]]\footnote{[ ] でくくってあるパラメータは省略可能という意味}
+
+    で複数の path を一度に workspace へコピー可能
+    \vspace{2ex}
+
+  \item path が ディレクトリの場合、そのディレクトリ以下のファイルを再起的に git add する
+    \vspace{2ex}
+
+  \item workspace のトップディレクトリで git add . と行うと全ファイルを git add できる
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]{git commit コマンド補足}{}
+
+  \begin{itemize}
+  \item git commit
+
+    でエディタが立ち上がり、そこで commit message を入力すると新 commit が作成される
+    \vspace{2ex}
+
+  \item git commit -m \textit{message}
+
+    でエディタを立ち上げずに commit message を指定する事も可能
+    \vspace{2ex}
+
+  \item message の無い commit を作成する事はできない
+  \end{itemize}
+
+\end{frame}

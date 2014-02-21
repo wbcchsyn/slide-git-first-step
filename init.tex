@@ -1,0 +1,93 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{init (ローカル)}{使ってみる}
+
+  git を使い始める準備をする
+  \vspace{4ex}
+
+  \$ mkdir \~{}/local\_rep
+
+  \$ cd \~{}/local\_rep\footnote{この後、しばらくは \~{}/local\_rep で作業します}
+
+  \$ git init
+
+  \$ git config {\dhyphen}global user.name 'Your Name'
+
+  \$ git config {\dhyphen}global user.email 'your@address'
+
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \onslide<2->{
+        \begin{block}{workspace}
+        \end{block}
+      }
+
+      \onslide<5->{
+        \begin{block}{cached (index)}
+        \end{block}
+      }
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \onslide<5->{
+        \begin{block}{repository}
+        \end{block}
+      }
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<1-2>{
+    \$ mkdir \~{}/local\_rep
+
+    \$ cd \~{}/local\_rep
+    \vspace{2ex}
+
+    ここで作成するディレクトリが workspace
+  }
+
+  \onslide*<3>{
+    \$ git config {\dhyphen}global user.name 'Your Name'
+
+    \$ git config {\dhyphen}global user.email 'your@address'
+    \vspace{2ex}
+
+    home directory 直下の config file を編集
+
+    workspace, cached, repository には影響無し
+  }
+
+  \onslide*<4-6>{
+    \$ git init
+    \vspace{2ex}
+
+    \onslide*<4-5>{ワークスペース直下に .git ディレクトリを作成し、その中に cached や repository を初め git に必要な物を作成する}
+    \onslide*<6>{今後、.git ディレクトリを直接触るか、git 以外のコマンドは、基本的に workspace の作業と思ってよい。}
+  }
+
+\end{frame}

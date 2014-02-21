@@ -1,0 +1,315 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{同時更新}{更新が競合したら}
+
+  local\_rep と clone\_rep で同時更新
+  \vspace{4ex}
+
+  \onslide*<1>{
+    local\_rep で更新
+    \vspace{2ex}
+
+    \$ cd \~{}/local\_rep
+
+    \$ touch h
+
+    \$ git add h
+
+    \$ git commit -m 'Add h.'
+
+    \$ git push origin master
+  }
+
+  \onslide*<2>{
+    clone\_rep で更新
+    \vspace{2ex}
+
+    \$ cd \~{}/clone\_rep
+
+    \$ touch i
+
+    \$ git add i
+
+    \$ git commit -m 'Add i.'
+
+    \$ git push origin master (失敗)
+  }
+
+  \onslide*<3>{
+    clone\_rep で local\_rep の更新を取り込み、再 push
+    \vspace{2ex}
+
+    \$ git fetch {\dhyphen}all -p
+
+    \$ git merge remotes/origin/master
+
+    \$ git push origin master
+  }
+
+  \onslide*<4>{
+    local\_rep に clone\_rep の更新を取り込む
+    \vspace{2ex}
+
+    \$ cd \~{}/local\_rep
+
+    \$ git fetch {\dhyphen}all -p
+
+    \$ git merge remotes/origin/master
+  }
+
+\end{frame}
+
+
+\begin{frame}<1-22>[t]{中で起きている事}{更新が競合したら}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{repository}{local}
+        \onslide<22>{
+          \node (c9) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex){
+            \commitmessage{Merge remote-...}
+            \nodepart{second}{master}
+          };
+
+          \node (c8) [commit, rectangle split, rectangle split parts=1] at (2em, 4ex){
+            \commitmessage{Add i.}
+          };
+        }
+
+        \onslide*<3-21>{
+          \node (c7) [commit, rectangle split, rectangle split parts=2] at (-2em, 6ex){
+            \commitmessage{Add h.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<22>{
+          \node (c7) [commit, rectangle split, rectangle split parts=1] at (-2em, 4ex){
+            \commitmessage{Add h.}
+          };
+
+        }
+
+        \onslide<-2>{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<3->{
+          \node (c6) [commit, rectangle split, rectangle split parts=1] at (0em, -0.5ex){
+            \commitmessage{Add f.}
+          };
+        }
+
+        \onslide*<22>{\draw (c8) -- (c9);}
+        \onslide*<22>{\draw (c7) -- (c9);}
+        \onslide*<22>{\draw (c6) -- (c8);}
+        \onslide*<3->{\draw (c6) -- (c7);}
+      \end{repository}
+
+    \end{narrowcolumn}
+
+    \begin{narrowcolumn}
+
+      \begin{repository}{remote}
+        \onslide<20->{
+          \node (c9) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex){
+            \commitmessage{Merge remote-...}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<11>{
+          \node (c8) [commit, rectangle split, rectangle split parts=2] at (2em, 6ex){
+            \commitmessage{Add i.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<20->{
+          \node (c8) [commit, rectangle split, rectangle split parts=1] at (2em, 4ex){
+            \commitmessage{Add i.}
+          };
+        }
+
+        \onslide*<5-10,12-19>{
+          \node (c7) [commit, rectangle split, rectangle split parts=2] at (-2em, 6ex){
+            \commitmessage{Add h.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<11,20->{
+          \node (c7) [commit, rectangle split, rectangle split parts=1] at (-2em, 4ex){
+            \commitmessage{Add h.}
+          };
+        }
+
+        \onslide<1-4>{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<5->{
+          \node (c6) [commit, rectangle split, rectangle split parts=1] at (0em, -0.5ex){
+            \commitmessage{Add f.}
+          };
+        }
+
+        \onslide*<20->{\draw (c8) -- (c9);}
+        \onslide*<20->{\draw (c7) -- (c9);}
+        \onslide*<11,20->{\draw (c6) -- (c8);}
+        \onslide*<5->{\draw (c6) -- (c7);}
+      \end{repository}
+
+    \end{narrowcolumn}
+
+    \begin{narrowcolumn}
+
+      \begin{repository}{clone}
+        \onslide<16->{
+          \node (c9) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex){
+            \commitmessage{Merge remote-...}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<7-15>{
+          \node (c8) [commit, rectangle split, rectangle split parts=2] at (2em, 6ex){
+            \commitmessage{Add i.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<16->{
+          \node (c8) [commit, rectangle split, rectangle split parts=1] at (2em, 4ex){
+            \commitmessage{Add i.}
+          };
+        }
+
+        \onslide*<14->{
+          \node (c7) [commit, rectangle split, rectangle split parts=1] at (-2em, 4ex){
+            \commitmessage{Add h.}
+          };
+        }
+
+        \onslide<1-6>{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide*<7->{
+          \node (c6) [commit, rectangle split, rectangle split parts=1] at (0em, -0.5ex){
+            \commitmessage{Add f.}
+          };
+        }
+
+        \onslide*<16->{\draw (c8) -- (c9);}
+        \onslide*<16->{\draw (c7) -- (c9);}
+        \onslide*<7->{\draw (c6) -- (c8);}
+        \onslide*<14->{\draw (c6) -- (c7);}
+      \end{repository}
+
+    \end{narrowcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ cd \~{}/local\_rep
+
+    \$ touch h
+
+    \$ git add h
+
+    \$ git commit -m 'Add h.'
+  }
+
+  \onslide*<4-5>{
+    \$ git push origin master
+  }
+
+  \onslide*<6-7>{
+    \$ cd \~{}/clone\_rep
+
+    \$ touch i
+
+    \$ git add i
+
+    \$ git commit -m 'Add i.'
+  }
+
+  \onslide*<8-12>{
+    \$ git push origin master
+    \vspace{2ex}
+
+    \onslide*<8>{origin に master branch が有るか確認 (有る)}
+
+    \onslide*<9>{
+      origin の master branch と同じ commit が
+
+      local の master branch の先祖か確認 (先祖ではない)
+    }
+
+    \onslide*<10-12>{
+      \onslide*<10-11>{無理に push すると ``Add h.'' という commit が branch から外れてしまう}
+
+      \onslide*<12>{データ損失防止のため、git が失敗させる}
+    }
+  }
+
+  \onslide*<13-14>{
+    \$ git fetch {\dhyphen}all -p
+  }
+
+  \onslide*<15-16>{
+    \$ git merge remotes/origin/master
+  }
+
+  \onslide*<17-20>{
+    \$ git push origin master
+    \vspace{2ex}
+
+    \onslide*<17>{origin に master branch が有るか確認 (有る)}
+
+    \onslide*<18>{
+      origin の master branch と同じ commit が
+
+      local の master branch の先祖か確認 (``Add h.'' が相当)
+    }
+
+    \onslide*<19-20>{origin に master branch をコピー}
+  }
+
+  \onslide*<21-22>{
+    \$ cd \~{}/local\_rep
+
+    \$ git fetch {\dhyphen}all -p
+
+    \$ git merge remotes/origin/master
+  }
+
+\end{frame}

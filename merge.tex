@@ -1,0 +1,170 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{merge}{branch を使用する}
+
+  他のブランチの更新を取り込む
+  \vspace{4ex}
+
+  \onslide*<1>{
+    develop を更新
+    \vspace{2ex}
+
+    \$ touch e
+
+    \$ git add e
+
+    \$ git commit -m 'Add e.'
+  }
+
+  \onslide*<2>{
+    master に develop の更新を反映
+    \vspace{2ex}
+
+    \$ git checkout master
+
+    \$ git merge develop
+  }
+
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{branch を使用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<5->{c} d \onslide<3,4,8->{e}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<5->{c} d \onslide<3,4,10->{e}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{leftrepository}{repository}
+        \onslide<12->{
+          \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, 15ex){
+            \commitmessage{Merge branch 'develop'}
+            \nodepart{second}{master{\HEAD}}
+          };
+        }
+
+        \onslide<3->{
+          \node (c4) [commit, rectangle split, rectangle split parts=2] at (5em, 7ex){
+            \commitmessage{Add e.}
+            \nodepart{second}{develop\onslide*<-4>{{\HEAD}}}
+          };
+        }
+
+        \onslide*<12>{
+          \node (c3) [commit, rectangle split, rectangle split parts=1] at (0em, 6.5ex){
+            \commitmessage{Add c.}
+          };
+        }
+
+        \onslide*<-11>{
+          \node (c3) [commit, rectangle split, rectangle split parts=2] at (0em, 7ex){
+            \commitmessage{Add c.}
+            \nodepart{second}{master\onslide*<5->{\HEAD}}
+          };
+        }
+
+        \onslide<-2>{
+          \node (c2) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex){
+            \commitmessage{Rename a to d and delete b.}
+            \nodepart{second}{develop{\HEAD}}
+          };
+        }
+
+        \onslide*<3->{
+          \node (c2) [commit, rectangle split, rectangle split parts=1] at (0em, -1ex){
+            \commitmessage{Rename a to d and delete b.}
+          };
+        }
+
+        \onslide*<12->{\draw (c4) -- (c5);}
+        \onslide*<12->{\draw (c3) -- (c5);}
+        \onslide*<3->{\draw (c2) -- (c4);}
+        \draw (c2) -- (c3);
+      \end{leftrepository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ touch e
+
+    \$ git add e
+
+    \$ git commit -m 'Add e.'
+  }
+
+  \onslide*<4-5>{
+    \$ git checkout master
+  }
+
+  \onslide*<6-12>{
+    \$ git merge develop
+    \vspace{2ex}
+
+    \onslide*<6>{
+      HEAD と develop の共通の先祖の commit を探す
+
+      ``Rename a to d and delete b.'' という commit が相当
+    }
+
+    \onslide*<7-8>{
+      branch が分岐してから develop で行われた
+
+      全変更を workspace に適用
+    }
+    \onslide*<9-10>{cached に適用}
+    \onslide*<11-12>{commit の作成}
+  }
+\end{frame}
+
+
+\begin{frame}[t]{git merge コマンド補足}{branch を使用する}
+
+  \begin{itemize}
+  \item 実際には branch の状態によって merge 後の
+
+    repository の状態は異なる
+
+    (ここで挙げた挙動は一例)
+    \vspace{2ex}
+
+  \item コマンド実施後に message 入力画面が出てくる事と
+
+    出てこない事があるが
+
+    今回の範囲を超えるので詳細は割愛
+    \vspace{2ex}
+
+  \item いずれの場合でも、最新状態では 2個の branch の
+
+    変更は全て含まれる
+  \end{itemize}
+
+\end{frame}

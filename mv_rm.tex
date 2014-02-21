@@ -1,0 +1,180 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{mv, rm}{使ってみる}
+
+  repository からファイルの削除、移動 (リネーム)
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace, cached でリネーム
+    \vspace{2ex}
+
+    \$ git mv a d
+  }
+
+  \onslide*<2>{
+    workspace, cached で削除
+    \vspace{2ex}
+
+    \$ git rm b
+  }
+
+  \onslide*<3>{
+    cached を repository に反映
+    \vspace{2ex}
+
+    \$ git commit -m 'Rename a to d and delete b.'
+  }
+
+\end{frame}
+
+
+\begin{frame}<1-10>[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<-2>{a}
+        \onslide<-4>{b}
+        c
+        \onslide<3->{d}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<-2>{a}
+        \onslide<-4>{b}
+        \onslide<99>{c}
+        \onslide<3->{d}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \onslide<9->{
+          \node (c2) [commit, rectangle split, rectangle split parts=3] at (0em, 10ex) {
+            \commitmessage{Rename a to d and delete b.}
+            \nodepart{second}{d}
+            \nodepart{third}{master{\HEAD}}
+          };
+        }
+
+        \onslide*<7-8>{
+          \node (c2) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex) {
+            \commitmessage{Rename a to d and delete b.}
+            \nodepart{second}{d}
+          };
+        }
+
+        \onslide<-8>{
+          \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+            \nodepart{third}{master{\HEAD}}
+          };
+        }
+
+        \onslide*<9->{
+          \node (c1) [commit, rectangle split, rectangle split parts=2] at (0em, -1.0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+          };
+        }
+
+        \onslide<7->{\draw (c1) -- (c2);}
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ git mv a d
+    \vspace{2ex}
+
+    workspace, cached の両方でファイルを移動 (リネーム)
+  }
+
+  \onslide*<4-5>{
+    \$ git rm b
+    \vspace{2ex}
+
+    workspace, cached の両方からファイルを削除
+  }
+
+  \onslide*<6-10>{
+    \$ git commit -m 'Rename a to d and delete b.'
+    \vspace{2ex}
+
+    \onslide*<6-7>{
+      cached を取り込み、message を添えて、現在の HEAD を親とする commit を作成
+    }
+    \onslide*<8-9>{
+      HEAD が branch を指している時 (普通はこの状態) は、
+
+      その branch の向き先を新しい commit へ変更
+    }
+    \onslide*<10>{
+      HEAD は master へ向いているので、
+
+      結果的に新しい commit へ移動}
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git mv コマンド補足}{使ってみる}
+
+  \begin{itemize}
+  \item git mv [-f] \textit{source} \textit{destination}
+
+    で source を destination に移動
+    \vspace{2ex}
+
+  \item 通常の mv コマンドのように、destination がディレクトリの場合、source は destination 以下のディレクトリに移動
+    \vspace{2ex}
+
+  \item -f をつけると、既存のファイルを上書き出来る
+
+    (-f が無い場合、エラーとなる)
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]{git rm コマンド補足}{使ってみる}
+
+  \begin{itemize}
+  \item git rm [-r] [-f] \textit{path1} [\textit{path2} [\textit{path3} ...]]
+
+    で複数の path を削除可能
+    \vspace{2ex}
+
+  \item 通常の rm コマンドのように、ディレクトリを削除する場合は -r オプションが必要
+    \vspace{2ex}
+
+  \item workspace と cached の内容が違う時などは、誤操作防止のために git rm はエラーになる
+
+    そのような場合、-f を使うと正常に削除可能
+  \end{itemize}
+
+\end{frame}

@@ -1,0 +1,203 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{push}{使ってみる}
+  local branch のコピーを git server に作成
+  \vspace{4 ex}
+
+  \onslide*<1>{
+    master branch を転送
+    \vspace{2ex}
+
+    \$ git push origin master
+  }
+
+  \onslide*<2>{
+    develop branch 作成
+    \vspace{2ex}
+
+    \$ git branch develop
+  }
+
+  \onslide*<3>{
+    master branch の更新
+
+    (git add f は git status の説明時に実施済み)
+    \vspace{2ex}
+
+    \$ git commit -m 'Add f.'
+  }
+
+  \onslide*<4>{
+    master branch の再転送
+    \vspace{2ex}
+
+    \$ git push origin master
+  }
+
+  \onslide*<5>{
+    develop branch の転送
+    \vspace{2ex}
+
+    \$ git push origin develop
+  }
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{local}
+        \onslide<8->{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 15ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master{\HEAD}}
+          };
+        }
+
+        \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, 6ex){
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{\onslide*<-7>{master{\HEAD}} \onslide*<6->{develop}}
+        };
+
+        \node (c4) [commit, rectangle split, rectangle split parts=1] at (2em, 0ex){
+          \commitmessage{Add e.}
+        };
+
+        \node (c3) [commit, rectangle split, rectangle split parts=1] at (-2em, 0ex){
+          \commitmessage{Add c.}
+        };
+
+        \onslide*<8->{\draw (c5) -- (c6);}
+        \draw (c4) -- (c5);
+        \draw (c3) -- (c5);
+      \end{repository}
+
+    \end{halfcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{remote}
+        \onslide<12->{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 15ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master}
+          };
+        }
+
+        \onslide<4->{
+          \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, 6ex){
+            \commitmessage{Merge branch 'develop'}
+            \nodepart{second}{\onslide*<-11>{master}\onslide*<15->{develop}}
+          };
+
+          \node (c4) [commit, rectangle split, rectangle split parts=1] at (2em, 0ex){
+            \commitmessage{Add e.}
+          };
+
+          \node (c3) [commit, rectangle split, rectangle split parts=1] at (-2em, 0ex){
+            \commitmessage{Add c.}
+          };
+
+          \draw (c4) -- (c5);
+          \draw (c3) -- (c5);
+        }
+
+        \onslide<12->{\draw (c5) -- (c6);}
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-4>{
+    \$ git push origin master
+    \vspace{2ex}
+
+    \onslide*<2>{origin に master branch が有るか確認 (無い)}
+
+    \onslide*<3-4>{origin に master branch の指す commit をコピー}
+  }
+
+  \onslide*<5-6>{\$ git branch develop}
+
+  \onslide*<7-8>{\$ git commit -m 'Add f.'}
+
+  \onslide*<9-12>{
+    \$ git push origin master
+    \vspace{2ex}
+
+    \onslide*<9>{origin に master branch が有るか確認 (有る)}
+
+    \onslide*<10>{
+      origin の master branch と同じ commit が
+
+      local の master branch の 先祖か確認 (先祖である)
+    }
+
+    \onslide*<11-12>{
+
+      origin に master branch をコピー
+
+      (新しい commit, ファイルの転送と master branch の移動)
+    }
+  }
+
+  \onslide*<13-15>{
+    \$ git push origin develop
+    \vspace{2ex}
+
+    \onslide*<13>{origin に develop branch が有るか確認 (無い)}
+
+    \onslide*<14-15>{
+
+      origin に develop branch をコピー
+
+      (branch の作成のみ)
+    }
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git push コマンド補足}{使ってみる}
+
+  \begin{itemize}
+  \item git push \textit{URI} \textit{source-branch}[:\textit{destination-branch}]
+
+    で source-branch を URI の destination-branch にコピー
+
+    destination-branch のデフォルトは source-branch
+    \vspace{2ex}
+
+  \item git push \textit{URI} :\textit{destination-branch}
+
+    で URI の destination-branch を削除
+
+    (空の branch をコピーすると思えば良い)
+
+    remote repository の branch を削除しても local repository の branch は残る
+    \vspace{2ex}
+
+  \item commit のコピーとは、commit 自身, その先祖の全 commit, 各 commit で必要な全ファイル、ディレクトリのコピー
+  \end{itemize}
+
+\end{frame}

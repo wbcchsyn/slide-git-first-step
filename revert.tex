@@ -1,0 +1,131 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{revert}{その他}
+
+  特定の commit を打ち消す commit を行う
+
+  (commit とその親 commit の差分を打ち消す)
+  \vspace{4ex}
+
+  \onslide*<1>{
+    戻したいバージョン (例えば、``Add h.'' という commit ) の commit のハッシュ値を確認
+    \vspace{2ex}
+
+    \$ git log {\dhyphen}graph
+    \vspace{2ex}
+
+    ...
+    \vspace{2ex}
+
+    (環境ごとに commit のハッシュ値は異なるので注意)
+
+    今回は 06d957bc3322557eb76fc86ee87b66c0288d3c08 とする
+  }
+
+
+  \onslide*<2>{
+    \$ git revert 06d9\footnote{``Add i.'' の commit}
+  }
+
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{その他}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e f g \onslide<-2>{h} i
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e f g \onslide<-2>{h} i
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+
+        \onslide<5->{
+          \node (c10) [commit, rectangle split, rectangle split parts=1] at (0em, 12ex){
+            \commitmessage{Revert ``Add h.''...}
+          };
+        }
+
+        \node (c9) [commit, rectangle split, rectangle split parts=1] at (0em, 8ex){
+          \commitmessage{Merge remote-...}
+        };
+
+        \node (c8) [commit, rectangle split, rectangle split parts=1] at (2em, 4ex){
+          \commitmessage{Add i.}
+        };
+
+        \node (c7) [commit, rectangle split, rectangle split parts=1] at (-2em, 4ex){
+          \commitmessage{Add h.}
+        };
+
+        \node (c6) [commit, rectangle split, rectangle split parts=1] at (0em, 0ex){
+          \commitmessage{Add f.}
+        };
+
+        \onslide*<5->{\draw (c9) -- (c10);}
+        \draw (c8) -- (c9);
+        \draw (c7) -- (c9);
+        \draw (c6) -- (c8);
+        \draw (c6) -- (c7);
+
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-5>{
+    \$ git revert 06d9
+    \vspace{2ex}
+
+    \onslide*<2-3>{
+      06d9 (``Add h.'' の commit) の変更 (06d9 とその親 commit の差分)
+
+      の逆を、workspace と cached に行う
+    }
+
+    \onslide*<4-5>{git commit を行う}
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git revert コマンド補足}{その他}
+
+  \begin{itemize}
+  \item git revert \textit{commit1} [\textit{commit2} [\textit{commit3} ...]]
+
+    で特定の commit の変更を打ち消す commit を行う
+    \vspace{2ex}
+
+  \item 親が複数存在する commit\footnote{git merge で作成された commit} を指定するには、-m というオプションが必要
+
+    (今回の範囲を超えるので詳細は割愛)
+  \end{itemize}
+
+\end{frame}

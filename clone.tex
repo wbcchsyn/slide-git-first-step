@@ -1,0 +1,184 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}<1-3>[t]{clone}{複数人で開発する}
+  repository のコピーを作成
+  \vspace{2ex}
+
+  \onslide*<1>{
+    clone repository の作成
+    \vspace{2ex}
+
+    \$ git clone \~{}/remote\_rep \~{}/clone\_rep
+
+    \$ cd \~{}/clone\_rep
+  }
+
+  \onslide*<2>{
+    現在の repository 一覧を表示
+    \vspace{2ex}
+
+    \$ git branch -a
+
+    * master
+
+    \onslide<99>{* }remotes/origin/HEAD -\textgreater origin/master
+
+    \onslide<99>{* }remotes/origin/master
+
+    \onslide<99>{* }remotes/origin/develop
+  }
+
+  \onslide*<3>{
+    develop branch の作成
+    \vspace{2ex}
+
+    \$ git branch develop remotes/origin/develop
+  }
+\end{frame}
+
+\begin{frame}[t]{中で起きている事}{複数人で開発する}
+
+  \begin{columns}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{remote}
+        \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 11ex){
+          \commitmessage{Add f.}
+          \nodepart{second}{master{\HEAD}}
+        };
+
+        \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, -1ex){
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{develop}
+        };
+
+        \draw (c5) -- (c6);
+      \end{repository}
+
+    \end{halfcolumn}
+
+    \begin{column}{0.55\textwidth}
+
+      \begin{repository}{clone}
+        \onslide<5->{
+          \node (c6) [commit, rectangle split, rectangle split parts=3] at (0em, 10ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{master{\HEAD}}
+            \nodepart{third}{\remotebranch{remotes/origin/master remotes/origin/HEAD}}
+          };
+        }
+
+        \onslide*<3-4>{
+          \node (c6) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex){
+            \commitmessage{Add f.}
+            \nodepart{second}{\remotebranch{remotes/origin/master remotes/origin/HEAD}}
+          };
+        }
+
+        \onslide<8->{
+          \node (c5) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex){
+            \commitmessage{Merge branch 'develop'}
+            \nodepart{second}{develop}
+            \nodepart{third}{\remotebranch{remotes/origin/develop}}
+          };
+        }
+
+        \onslide*<3-7>{
+          \node (c5) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex){
+            \commitmessage{Merge branch 'develop'}
+            \nodepart{second}{\remotebranch{remotes/origin/develop}}
+          };
+        }
+
+        \onslide*<3->{\draw (c5) -- (c6);}
+      \end{repository}
+
+    \end{column}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<1-5>{
+    \$ git clone \~{}/remote\_rep \~{}/clone\_rep
+
+    \$ cd \~{}/clone\_rep
+    \vspace{2ex}
+
+  }
+
+  \onslide*<2-3>{
+    remote\_rep の全 branch, HEAD を
+
+    remote branch としてコピー
+  }
+
+  \onslide*<4-5>{remotes/origin/HEAD を元に master branch を作成}
+
+  \onslide*<6>{
+    \$ git branch -a
+
+    \code{
+      * master
+
+      \onslide<99>{* }remotes/origin/HEAD -\textgreater origin/master
+
+      \onslide<99>{* }remotes/origin/develop
+
+      \onslide<99>{* }remotes/origin/master
+    }
+  }
+
+  \onslide*<7-8>{
+    \$ git branch develop remotes/origin/develop
+    \vspace{2ex}
+
+    remotes/origin/develop を元に develop branch を作成
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git clone コマンド補足}{複数人で開発する}
+
+  \begin{itemize}
+  \item git clone \textit{URI} [\textit{directory}]
+
+    で remote repository の clone を directory に作成
+
+    directory のデフォルトは URI の reopsitory 名
+
+    git の top directory はいつでも変更してよい
+    \vspace{2ex}
+
+  \item git clone 時に指定した URI は、origin というエイリアスで登録される
+    \vspace{2ex}
+
+  \item git branch -a
+
+    で全ての remote branch が閲覧可能
+    \vspace{2ex}
+
+  \item master 以外の必要な branch は
+
+    git branch \textit{branch-name} \textit{start-point} で作成
+
+    (remote branch は閲覧専用として使用するべき)
+  \end{itemize}
+
+\end{frame}

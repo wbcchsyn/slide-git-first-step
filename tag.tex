@@ -1,0 +1,92 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{tag}{}
+
+  commit に移動しない名前をつける
+  \vspace{4ex}
+
+  \onslide*<1,5>{
+    現在の tag 一覧を表示
+    \vspace{2ex}
+
+    \$ git tag
+    \vspace{2ex}
+
+    tag は無いので何も表示されない
+  }
+
+  \onslide*<2>{
+    tag を作成
+    \vspace{2ex}
+
+    \$ git tag v0.0.1
+    \vspace{2ex}
+
+    HEAD の向いている commit に対して v0.0.1 という tag をつける
+  }
+
+  \onslide*<3>{
+    \$ git tag
+    \vspace{2ex}
+
+    tag 一覧を表示
+    \vspace{2ex}
+
+    \code{v0.0.1}
+  }
+
+  \onslide*<4>{
+    \$ git tag -d v0.0.1
+    \vspace{2ex}
+
+    tag v0.0.1 を削除
+  }
+\end{frame}
+
+
+\begin{frame}[t]{tag}{コマンド補足}
+
+  \begin{itemize}
+  \item git tag \textit{tag-name} [\textit{commit}]
+
+    で commit を指す tag を作成
+
+    commit は branch, HEAD, ハッシュ値等で指定
+
+    commit のデフォルトは HEAD
+    \vspace{2ex}
+
+  \item tag を remote repository へ転送するには
+
+    git push \textit{URI} tag \textit{tag-name}
+    \vspace{2ex}
+
+  \item remote repository の tag を削除するには
+
+    git push \textit{URI} :refs/tags/\textit{tag-name}
+    \vspace{2ex}
+
+  \item remote repository の tag も git fetch {\dhyphen}all -p で取得可能
+    \vspace{2ex}
+
+  \item merge や checkout の commit 指定に tag も使用可能
+
+    ただし、その場合 HEAD が branch から外れるので注意
+  \end{itemize}
+
+\end{frame}

@@ -1,0 +1,130 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{diff}{レポジトリの状態を確認する}
+
+  workspace, cached, commit 間の差分をパッチレベルで表示
+  \vspace{4ex}
+
+  \onslide*<1>{
+    \$ git diff
+    \vspace{2ex}
+
+    workspace と cached の差分を表示
+
+    (差分は無いので何も表示されない)
+  }
+
+  \onslide*<2>{
+    \$ git diff {\dhyphen}cached
+    \vspace{2ex}
+
+    cached と HEAD の差分を表示
+    \vspace{2ex}
+
+    \code{
+      diff {\dhyphen}git a/f b/f
+
+      new file mode 100644
+
+      index 0000000..9daeafb
+
+      {\hyphen}{\hyphen}{\hyphen} /dev/null
+
+      +++ b/f
+
+      @@ -0,0 +1 @@
+
+      +test
+    }
+  }
+
+  \onslide*<3>{
+    \$ git diff 3658
+    \vspace{2ex}
+
+    workspace と commit の差分を表示
+    \vspace{2ex}
+
+    \code{
+      diff {\dhyphen}git a/c b/c
+
+      new file mode 100644
+
+      index 0000000..e69de29
+
+      diff {\dhyphen}git a/f b/f
+
+      new file mode 100644
+
+      index 0000000..9daeafb
+
+      {\hyphen}{\hyphen}{\hyphen} /dev/null
+
+      +++ b/f
+
+      @@ -0,0 +1 @@
+
+      +test
+    }
+  }
+
+  \onslide*<4>{
+    \$ git diff 3658 HEAD
+    \vspace{2ex}
+
+    3658 と HEAD の差分を表示
+    \vspace{2ex}
+
+    \code{
+      diff {\dhyphen}git a/c b/c
+
+      new file mode 100644
+
+      index 0000000..e69de29
+    }
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git diff コマンド補足}{レポジトリの状態を確認する}
+
+  \begin{itemize}
+  \item git diff [{\dhyphen}]\footnote{曖昧さ回避の為のオプション、通常は必要ない} [\textit{path1} [\textit{path2} [...]]]\footnote{path が省略されると、git 管理下の全ファイル}
+
+    で path の workspace と cached の差分を表示
+    \vspace{2ex}
+
+  \item git diff \textit{commit} [{\dhyphen}] [\textit{path1} [\textit{path2} [...]]]
+
+    で path の workspace と commit の差分を表示
+
+    commit は HEAD や branch, ハッシュ値等で指定
+    \vspace{2ex}
+
+  \item git diff {\dhyphen}cached \textit{commit} [{\dhyphen}] [\textit{path1} [\textit{path2} [...]]]
+
+    で path の commit と cached の差分を表示
+    \vspace{2ex}
+
+  \item git diff \textit{commit1} \textit{commit2} [{\dhyphen}] [\textit{path1} [\textit{path2} [...]]]
+
+    で path の commit 間の差分を表示
+  \end{itemize}
+
+\end{frame}

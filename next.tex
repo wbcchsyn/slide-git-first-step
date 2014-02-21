@@ -1,0 +1,137 @@
+% Copyright 2014 Yoshida Shin
+% 
+% This is part of "Git First Step."
+% 
+% This program is free software: you can redistribute it and/or modify
+%     it under the terms of the GNU General Public License as published by
+%     the Free Software Foundation, either version 3 of the License, or
+%     (at your option) any later version.
+% 
+%     This program is distributed in the hope that it will be useful,
+%     but WITHOUT ANY WARRANTY; without even the implied warranty of
+%     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%     GNU General Public License for more details.
+% 
+%     You should have received a copy of the GNU General Public License
+%     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+\begin{frame}[t]{最後に}{}
+
+  もっと git を勉強するには
+  \vspace{2ex}
+
+  \begin{itemize}
+  \item man を読む
+  \item 公式ガイドを読む
+  \item 一般的な git の開発フローを学ぶ
+  \end{itemize}
+  \vspace{2ex}
+
+  などの方法がおすすめ
+
+\end{frame}
+
+\begin{frame}[t]{最後に}{}
+
+  man の探し方
+  \vspace{2ex}
+
+  git の man は、``git'' と最初の引数を ``-'' でつなげた物を読む
+
+  例) \$ man git-add
+  \vspace{2ex}
+
+  \onslide*<2->{
+    最初の引数まで入力して {\dhyphen}help と入力しても同じ
+
+    例) \$ git add {\dhyphen}help
+  }
+  \vspace{2ex}
+
+  \onslide*<3>{
+    そもそも最初の引数が分からない場合や、
+
+    git でどんな事が出来るか知りたい場合は
+
+    git の man を引く
+
+    \$ man git
+  }
+\end{frame}
+
+
+\begin{frame}[t]{最後に}{}
+
+  \onslide*<1>{
+    公式ガイドの見方
+
+    \$ git help -g
+
+    で git のガイド一覧を表示
+  }
+
+  \onslide*<2>{
+    \$ git help -g
+
+    \code{
+      The common Git guides are:
+      \vspace{2ex}
+
+      attributes   Defining attributes per path
+
+      glossary     A Git glossary
+
+      ignore       Specifies intentionally untracked files to ignore
+
+      modules      Defining submodule properties
+
+      revisions    Specifying revisions and ranges for Git
+
+      tutorial     A tutorial introduction to Git (for version 1.5.1 or newer)
+
+      workflows    An overview of recommended workflows with Git
+      \vspace{2ex}
+
+      'git help -a' and 'git help -g' lists available subcommands and some
+
+      concept guides. See 'git help {\textless}command{\textgreater}' or 'git help {\textless}concept{\textgreater}'
+
+      to read about a specific subcommand or concept.
+    }
+  }
+
+  \onslide*<3>{
+    興味があるガイドをみつけたら
+    \vspace{2ex}
+
+    \$ git help {\textless}concept{\textgreater}
+    \vspace{2ex}
+
+    で閲覧
+    \vspace{2ex}
+
+    例) git help tutorial
+  }
+\end{frame}
+
+
+\begin{frame}[t]{最後に}{}
+  一般的な開発フローについて学ぶ
+  \vspace{2ex}
+
+  本勉強会ではあまり触れませんでしたが
+
+  best practice についても勉強すると面白いかも
+  \vspace{2ex}
+
+  まずは、git flow と github flow を勉強すると良いと思います
+\end{frame}
+
+
+\begin{frame}[t]{最後に}{}
+
+  ``git 次の一歩'' も開催予定なので、
+
+  興味のある方は来てください
+
+\end{frame}
