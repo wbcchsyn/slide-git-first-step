@@ -13,9 +13,9 @@
 
   \$ git init
 
-  \$ git config {\dhyphen}global user.name 'Your Name'
+  \$ git config user.name 'Your Name'
 
-  \$ git config {\dhyphen}global user.email 'your@address'
+  \$ git config user.email 'your@address'
 
 \end{frame}
 
@@ -58,23 +58,23 @@
     ここで作成するディレクトリが workspace
   }
 
-  \onslide*<3>{
-    \$ git config {\dhyphen}global user.name 'Your Name'
-
-    \$ git config {\dhyphen}global user.email 'your@address'
-    \vspace{2ex}
-
-    home directory 直下の config file を編集
-
-    workspace, cached, repository には影響無し
-  }
-
-  \onslide*<4-6>{
+  \onslide*<3-5>{
     \$ git init
     \vspace{2ex}
 
     \onslide*<4-5>{ワークスペース直下に .git ディレクトリを作成し、その中に cached や repository を初め git に必要な物を作成する}
     \onslide*<6>{今後、.git ディレクトリを直接触るか、git 以外のコマンドは、基本的に workspace の作業と思ってよい。}
+  }
+
+  \onslide*<6>{
+    \$ git config user.name 'Your Name'
+
+    \$ git config user.email 'your@address'
+    \vspace{2ex}
+
+    この git の設定ファイルを編集
+
+    workspace, cached, repository には影響無し
   }
 
 \end{frame}
