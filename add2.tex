@@ -1,0 +1,30 @@
+% This is part of the ``Git First Step''.
+% Copyright 2014, 2020 Yoshida Shin.
+% See the file slide.tex for copying conditions.
+
+\begin{frame}[t]{git の管理するファイル情報}{使ってみる}
+
+  git が管理するファイル情報は、主に以下の 3 個
+
+  \begin{itemize}
+  \item ファイルの相対パス
+  \item ファイルの中身
+  \item ファイルのパーミッション
+  \end{itemize}
+  \vspace{2ex}
+
+  \onslide<2->{
+    逆に、git は以下のような情報は管理しません。
+    \begin{itemize}
+    \item ファイルの所有者
+    \item ファイルの更新時刻
+    \end{itemize}
+  }
+  \vspace{2ex}
+
+  \onslide<3->{
+    上に列挙した git が管理するファイル情報は ``git add'' で
+    何度でも workspace から cached に反映可能
+  }
+
+\end{frame}
