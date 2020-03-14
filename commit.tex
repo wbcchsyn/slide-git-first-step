@@ -1,0 +1,91 @@
+% This is part of the ``Git First Step''.
+% Copyright 2014, 2020 Yoshida Shin.
+% See the file slide.tex for copying conditions.
+
+\begin{frame}[t]{commit}{使ってみる}
+
+  cached を repository に反映
+  \vspace{2ex}
+
+  \$ git commit -m 'Add a and b.'
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a b c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a b
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \onslide<3->{
+          \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+            \nodepart{third}{master\onslide*<4->{{\HEAD}}}
+          };
+        }
+
+        \onslide*<2>{
+          \node (c1) [commit, rectangle split, rectangle split parts=2] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+          };
+        }
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \$ git commit -m 'Add a and b.'
+  \vspace{2ex}
+
+  \onslide*<-2>{cached を取り込み、message を添えて commit を作成}
+  \onslide*<3>{
+    また、初回 commit 時のみ master branchを作成
+
+    (branch: commit へのリンクの様な物)
+  }
+  \onslide*<4>{
+    最初、HEAD は master へ向いている
+
+    (HEAD: repository 内の現在の commit を指すリンクの様な物)
+
+    (この場合、HEAD はリンクのリンクとなる)
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git commit コマンド補足}{}
+
+  \begin{itemize}
+  \item git commit
+
+    でエディタが立ち上がり、そこで commit message を入力すると新 commit が作成される
+    \vspace{2ex}
+
+  \item git commit -m \textit{message}
+
+    でエディタを立ち上げずに commit message を指定する事も可能
+    \vspace{2ex}
+
+  \item message の無い commit を作成する事はできない
+  \end{itemize}
+
+\end{frame}

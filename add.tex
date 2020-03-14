@@ -1,0 +1,82 @@
+% This is part of the ``Git First Step''.
+% Copyright 2014, 2020 Yoshida Shin.
+% See the file slide.tex for copying conditions.
+
+\begin{frame}[t]{add}{使ってみる}
+
+  cached にファイル、ディレクトリを追加する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ touch a b c
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add a b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<3->{a b c}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<5->{a b}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+      \begin{repository}{repository}
+      \end{repository}
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ touch a b c
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add a b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{git add コマンド補足}{使ってみる}
+
+  \begin{itemize}
+  \item git add \textit{path1} [\textit{path2} [\textit{path3} [...]]]\footnote{[ ] でくくってあるパラメータは省略可能という意味}
+
+    で複数の path を一度に workspace へコピー可能
+    \vspace{2ex}
+
+  \item path が ディレクトリの場合、そのディレクトリ以下のファイルを再起的に git add する
+    \vspace{2ex}
+
+  \item workspace のトップディレクトリで git add . と行うと全ファイルを git add できる
+  \end{itemize}
+
+\end{frame}
