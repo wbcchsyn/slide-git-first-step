@@ -1,3 +1,7 @@
+# This is part of the ``Git First Step''.
+# Copyright 2014, 2020 Yoshida Shin.
+# See the file slide.tex for copying conditions.
+
 TEX = *.tex
 STY = *.sty
 
