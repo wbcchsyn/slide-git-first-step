@@ -31,7 +31,6 @@
 
     \code{d}
   }
-
 \end{frame}
 
 \begin{frame}[t]{中で起きている事}{branch を使用する}
@@ -109,12 +108,12 @@
     commit は branch, tag\footnote{後述}, ハッシュ値\footnote{後述}等で指定
     \vspace{2ex}
 
-  \item リリース時以外は HEAD はどこかの branch を指している状態にすると良い
-    \vspace{2ex}
-
   \item workspace や cached が clean でない場合\footnote{未 commit のファイルがある場合}は
 
     情報が失われる可能性があるので注意
+    \vspace{2ex}
+
+  \item git checkout コマンドには他の役割もあるので後述
   \end{itemize}
 
 \end{frame}
