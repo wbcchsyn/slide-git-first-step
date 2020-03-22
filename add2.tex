@@ -311,6 +311,28 @@
 \end{frame}
 
 
+\begin{frame}[t]{git add コマンドまとめ}{使ってみる}
+
+  \begin{itemize}
+  \item git add \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+
+    で workspace の指定された path を cached にコピー
+    \vspace{2ex}
+
+  \item path が ディレクトリの場合、そのディレクトリ以下のファイルを再起的に git add する
+    \vspace{2ex}
+
+  \item workspace のトップディレクトリで git add . と行うと全ファイルを git add できる
+  \item git add は何度でも実行可能
+
+    (同じファイルを複数回指定しても良い)
+  \item ファイルのパーミッションも git add で変更可能
+  \item 存在しないファイルを git add すると削除になる
+  \end{itemize}
+
+\end{frame}
+
+
 \begin{frame}[t]{commit の追加}{使ってみる}
 
   cached を repository に反映
