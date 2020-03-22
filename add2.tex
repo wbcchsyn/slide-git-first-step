@@ -97,3 +97,72 @@
     \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
   }
 \end{frame}
+
+
+\begin{frame}[t]{ファイルの中身を変更}{使ってみる}
+
+  b の中身を変更する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ echo 'foo' \textgreater \space b
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a \onslide*<1-2>{\color{green}b \color{black}}\onslide*<3->{\color{red}b \color{black}}c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a \onslide*<-4>{\color{green}b \color{black}}\onslide*<5->{\color{red}b \color{black}}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ echo 'foo' \textgreater \space b
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+\end{frame}
