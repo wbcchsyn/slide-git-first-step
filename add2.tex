@@ -166,3 +166,75 @@
     \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
   }
 \end{frame}
+
+
+\begin{frame}[t]{ファイルの削除}{使ってみる}
+
+  b を削除する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ rm b
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a \onslide<1-2>{\color{red}b \color{black}}c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a \onslide<-4>{\color{red}b \color{black}}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ rm b
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー
+
+      (「存在しない」という状態をコピーしたので削除)
+    }
+  }
+\end{frame}
