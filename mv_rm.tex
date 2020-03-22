@@ -2,166 +2,66 @@
 % Copyright 2014, 2020 Yoshida Shin.
 % See the file slide.tex for copying conditions.
 
-\begin{frame}[t]{mv, rm}{使ってみる}
-
-  repository からファイルの削除、移動 (リネーム)
-  \vspace{4ex}
-
-  \onslide*<1>{
-    workspace, cached でリネーム
-    \vspace{2ex}
-
-    \$ git mv a d
-  }
-
-  \onslide*<2>{
-    workspace, cached で削除
-    \vspace{2ex}
-
-    \$ git rm b
-  }
-
-  \onslide*<3>{
-    cached を repository に反映
-    \vspace{2ex}
-
-    \$ git commit -m 'Rename a to d and delete b.'
-  }
-
-\end{frame}
-
-
-\begin{frame}<1-10>[t]{中で起きている事}{使ってみる}
-
-  \begin{columns}
-
-    \begin{narrowcolumn}
-
-      \begin{block}{workspace}
-        \onslide<-2>{a}
-        \onslide<-4>{b}
-        c
-        \onslide<3->{d}
-      \end{block}
-
-      \begin{block}{cached (index)}
-        \onslide<-2>{a}
-        \onslide<-4>{b}
-        \onslide<99>{c}
-        \onslide<3->{d}
-      \end{block}
-
-    \end{narrowcolumn}
-
-    \begin{halfcolumn}
-
-      \begin{repository}{repository}
-        \onslide<9->{
-          \node (c2) [commit, rectangle split, rectangle split parts=3] at (0em, 10ex) {
-            \commitmessage{Rename a to d and delete b.}
-            \nodepart{second}{d}
-            \nodepart{third}{master{\HEAD}}
-          };
-        }
-
-        \onslide*<7-8>{
-          \node (c2) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex) {
-            \commitmessage{Rename a to d and delete b.}
-            \nodepart{second}{d}
-          };
-        }
-
-        \onslide<-8>{
-          \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
-            \commitmessage{Add a and b.}
-            \nodepart{second}{a b}
-            \nodepart{third}{master{\HEAD}}
-          };
-        }
-
-        \onslide*<9->{
-          \node (c1) [commit, rectangle split, rectangle split parts=2] at (0em, -1.0ex) {
-            \commitmessage{Add a and b.}
-            \nodepart{second}{a b}
-          };
-        }
-
-        \onslide<7->{\draw (c1) -- (c2);}
-      \end{repository}
-
-    \end{halfcolumn}
-
-  \end{columns}
+\begin{frame}[t]{mv, rm}{概要}
+  cached からファイルを削除するには workspace から削除した後で git add すれば良い
   \vspace{2ex}
 
-  \onslide*<2-3>{
-    \$ git mv a d
-    \vspace{2ex}
-
-    workspace, cached の両方でファイルを移動 (リネーム)
+  \onslide<2->{
+    ファイルのリネームはファイル削除と追加を行えば良い
   }
+  \vspace{2ex}
 
-  \onslide*<4-5>{
-    \$ git rm b
-    \vspace{2ex}
 
-    workspace, cached の両方からファイルを削除
+  \onslide<3->{
+    ただし、この方法は面倒でタブ補完が効かないこともある
   }
+  \vspace{2ex}
 
-  \onslide*<6-10>{
-    \$ git commit -m 'Rename a to d and delete b.'
-    \vspace{2ex}
-
-    \onslide*<6-7>{
-      cached を取り込み、message を添えて、現在の HEAD を親とする commit を作成
-    }
-    \onslide*<8-9>{
-      HEAD が branch を指している時 (普通はこの状態) は、
-
-      その branch の向き先を新しい commit へ変更
-    }
-    \onslide*<10>{
-      HEAD は master へ向いているので、
-
-      結果的に新しい commit へ移動}
+  \onslide<4->{
+    ショートカット的なコマンドとして、``git rm'' と ``git mv'' が用意されている
   }
-
 \end{frame}
 
 
-\begin{frame}[t]{git mv コマンド補足}{使ってみる}
+\begin{frame}[t]{mv, rm}{概要}
+  \$ git rm [\hyphen r] [\hyphen f] \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+  \vspace{2ex}
 
-  \begin{itemize}
-  \item git mv [-f] \textit{source} \textit{destination}
+  これは、
+  \vspace{2ex}
 
-    で source を destination に移動
+  \$ rm [\hyphen r] [\hyphen f] \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+
+  \$ git add \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+  \vspace{2ex}
+
+  とほとんど同じ
+  \vspace{2ex}
+
+  \onslide<2->{
+    git rm では git の使い方に対応したエラーを出してくれるところが少し違う
     \vspace{2ex}
 
-  \item 通常の mv コマンドのように、destination がディレクトリの場合、source は destination 以下のディレクトリに移動
-    \vspace{2ex}
+    \onslide<3->{
+      エラーメッセージを見て問題無いと思ったら \hyphen f をつけて再実行すると良い
 
-  \item -f をつけると、既存のファイルを上書き出来る
-
-    (-f が無い場合、エラーとなる)
-  \end{itemize}
-
+      (個人的には少し過剰警告だと思う)
+    }
+  }
 \end{frame}
 
 
-\begin{frame}[t]{git rm コマンド補足}{使ってみる}
+\begin{frame}[t]{mv, rm}{概要}
+  \$ git mv \textit{path1} \textit{path2}
+  \vspace{2ex}
 
-  \begin{itemize}
-  \item git rm [-r] [-f] \textit{path1} [\textit{path2} [\textit{path3} ...]]
+  これは、
+  \vspace{2ex}
 
-    で複数の path を削除可能
-    \vspace{2ex}
+  \$ mv \textit{path1} \textit{path2}
 
-  \item 通常の rm コマンドのように、ディレクトリを削除する場合は -r オプションが必要
-    \vspace{2ex}
+  \$ git add \textit{path1} \textit{path2}
+  \vspace{2ex}
 
-  \item workspace と cached の内容が違う時などは、誤操作防止のために git rm はエラーになる
-
-    そのような場合、-f を使うと正常に削除可能
-  \end{itemize}
-
+  とほとんど同じ
 \end{frame}
