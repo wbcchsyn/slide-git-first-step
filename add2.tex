@@ -1,0 +1,420 @@
+% This is part of the ``Git First Step''.
+% Copyright 2014, 2020 Yoshida Shin.
+% See the file slide.tex for copying conditions.
+
+\begin{frame}[t]{git の管理するファイル情報}{使ってみる}
+
+  git が管理するファイル情報は、主に以下の 3 個
+
+  \begin{itemize}
+  \item ファイルの相対パス
+  \item ファイルの中身
+  \item ファイルのパーミッション
+  \end{itemize}
+  \vspace{2ex}
+
+  \onslide<2->{
+    逆に、git は以下のような情報は管理しません。
+    \begin{itemize}
+    \item ファイルの所有者
+    \item ファイルの更新時刻
+    \end{itemize}
+  }
+  \vspace{2ex}
+
+  \onslide<3->{
+    上に列挙した git が管理するファイル情報は ``git add'' で
+    何度でも workspace から cached に反映可能
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{パーミッションの変更}{使ってみる}
+
+  a のパーミッションを変更する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ chmod +x b
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a \onslide*<1-2>{b \color{black}}\onslide*<3->{\color{green} b \color{black}}c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a \onslide*<-4>{b}\onslide*<5->{\color{green}b}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ chmod +x b
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+\end{frame}
+
+
+\begin{frame}[t]{ファイルの中身を変更}{使ってみる}
+
+  b の中身を変更する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ echo 'foo' \textgreater \space b
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a \onslide*<1-2>{\color{green}b \color{black}}\onslide*<3->{\color{red}b \color{black}}c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a \onslide*<-4>{\color{green}b \color{black}}\onslide*<5->{\color{red}b \color{black}}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ echo 'foo' \textgreater \space b
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+\end{frame}
+
+
+\begin{frame}[t]{ファイルの削除}{使ってみる}
+
+  b を削除する
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ rm b
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add b
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        a \onslide<1-2>{\color{red}b \color{black}}c
+      \end{block}
+
+      \begin{block}{cached (index)}
+        a \onslide<-4>{\color{red}b \color{black}}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ rm b
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add b
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー
+
+      (「存在しない」という状態をコピーしたので削除)
+    }
+  }
+\end{frame}
+
+
+\begin{frame}[t]{ファイルのリネーム}{使ってみる}
+
+  a を d というファイル名にリネームする
+
+  (ファイル追加と削除を行えばリネームになる)
+  \vspace{4ex}
+
+  \onslide*<1>{
+    workspace を更新
+    \vspace{2ex}
+
+    \$ mv a d
+  }
+
+  \onslide*<2>{
+    workspace を cached に反映
+    \vspace{2ex}
+
+    \$ git add a d
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide<-2>{a }c \onslide<3->{d}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide<-4>{a }\onslide<5->{d}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Add a and b.}
+          \nodepart{second}{a b}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ mv a d
+    \vspace{2ex}
+
+    .git ディレクトリは触っていないので、workspace のみ変更
+  }
+
+  \onslide*<4-5>{
+    \$ git add a d
+    \vspace{2ex}
+
+    \onslide*<-5>{workspace から cached へファイル、ディレクトリをコピー}
+  }
+\end{frame}
+
+
+\begin{frame}[t]{git add コマンドまとめ}{使ってみる}
+
+  \begin{itemize}
+  \item git add \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+
+    で workspace の指定された path を cached にコピー
+    \vspace{2ex}
+
+  \item path が ディレクトリの場合、そのディレクトリ以下のファイルを再起的に git add する
+    \vspace{2ex}
+
+  \item workspace のトップディレクトリで git add . と行うと全ファイルを git add できる
+  \item git add は何度でも実行可能
+
+    (同じファイルを複数回指定しても良い)
+  \item ファイルのパーミッションも git add で変更可能
+  \item 存在しないファイルを git add すると削除になる
+  \end{itemize}
+
+\end{frame}
+
+
+\begin{frame}[t]{commit の追加}{使ってみる}
+
+  cached を repository に反映
+  \vspace{2ex}
+
+  \$ git commit -m 'Rename a to d and delete b.'
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{使ってみる}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d
+      \end{block}
+
+      \begin{block}{cached (index)}
+        d
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{halfcolumn}
+
+      \begin{repository}{repository}
+        \onslide<5->{
+          \node (c2) [commit, rectangle split, rectangle split parts=3] at (0em, 10ex) {
+            \commitmessage{Rename a to d and delete b.}
+            \nodepart{second}{d}
+            \nodepart{third}{master{\HEAD}}
+          };
+        }
+
+        \onslide*<3-4>{
+          \node (c2) [commit, rectangle split, rectangle split parts=2] at (0em, 10ex) {
+            \commitmessage{Rename a to d and delete b.}
+            \nodepart{second}{d}
+          };
+        }
+
+        \onslide<-4>{
+          \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+            \nodepart{third}{master{\HEAD}}
+          };
+        }
+
+        \onslide*<5->{
+          \node (c1) [commit, rectangle split, rectangle split parts=2] at (0em, -1.0ex) {
+            \commitmessage{Add a and b.}
+            \nodepart{second}{a b}
+          };
+        }
+
+        \onslide<3->{\draw (c1) -- (c2);}
+      \end{repository}
+
+    \end{halfcolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide<2->{
+    \$ git commit -m 'Rename a to d and delete b.'
+    \vspace{2ex}
+
+    \onslide*<2-3>{
+      cached を取り込み、message を添えて現在の HEAD を親とする commit を作成
+    }
+    \onslide*<4-5>{
+      HEAD が branch を指している時 (普通はこの状態) は、
+
+      その branch の向き先を新しい commit へ変更
+    }
+    \onslide*<6>{
+      HEAD は master へ向いているので、
+
+      結果的に新しい commit へ移動
+    }
+  }
+\end{frame}
