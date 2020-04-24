@@ -131,3 +131,30 @@
   }
 
 \end{frame}
+
+
+\begin{frame}[t]{git checkout コマンド補足}{過去の履歴を活用する}
+
+  \begin{itemize}
+  \item git checkout \textit{commit}
+
+    HEAD の commit へ切り替え
+
+    \vspace{2ex}
+
+  \item git checkout [{\dhyphen}]  \textit{path1} [\textit{path2} [\textit{path3} [...]]]
+
+    workspace の複数の path を cached の状態に戻す
+
+    \vspace{2ex}
+
+    path がディレクトリの場合、そのディレクトリ以下のファイルを再帰的に git checkout する
+
+    \vspace{2ex}
+
+    {\dhyphen} は path と同名の branch があった場合に、1 個目の使い方と区別するために使用する
+
+    (滅多に使用しない)
+  \end{itemize}
+
+\end{frame}
