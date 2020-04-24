@@ -1,0 +1,133 @@
+% This is part of the ``Git First Step''.
+% Copyright 2014, 2020 Yoshida Shin.
+% See the file slide.tex for copying conditions.
+
+\begin{frame}[t]{checkout}{過去の履歴を活用する}
+
+  ``git reset'' では cached を変更せずに workspace を cached に揃える事ができない
+
+  \vspace{2ex}
+
+  \begin{itemize}
+  \item git reset --mixed
+
+    cached を repository に揃える
+  \item git reset --hard
+
+    workspace と cached を repository に揃える
+  \end{itemize}
+
+  \vspace{2ex}
+
+  そのような事をしたい場合も git checkout で行う
+
+  (git checkout の 2 個目の機能)
+
+\end{frame}
+
+
+\begin{frame}[t]{checkout}{過去の履歴を活用する}
+
+  workspace と cached の状態を変化させ、最終的に元に戻す
+
+  \vspace{4ex}
+
+  \$ echo 'c' \textgreater \space c
+
+  \$ git add c
+
+  \vspace{2ex}
+
+  \$ echo '\_c\_' \textgreater \space c
+
+  \$ git checkout c
+
+  \vspace{2ex}
+
+  \$ git reset {\dhyphen}soft
+
+  \$ git checkout c
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{過去の履歴を活用する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        \onslide*<1,8>{\color{black}} \onslide*<2,5-7>{\color{red}} \onslide*<3-4>{\color{blue}} c
+        \color{black} d e
+      \end{block}
+
+      \begin{block}{cached (index)}
+        \onslide*<1,6->{\color{black}} \onslide*<2-5>{\color{red}} c
+        \color{black} d e
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2>{
+    \$ echo 'c' \textgreater \space c
+
+    \$ git add c
+
+    \vspace{2ex}
+
+    workspace と cached が変更される
+  }
+
+  \onslide*<3> {
+    \$ echo '\_c\_' \textgreater \space c
+
+    \vspace{2ex}
+
+    workspace のみ変更される
+  }
+
+  \onslide*<4-5>{
+    \$ git checkout c
+
+    \onslide<5>{
+      \vspace{2ex}
+
+      workspace が cached の状態に戻る
+    }
+  }
+
+  \onslide*<6>{
+    \$ git reset {\dhyphen}soft
+
+    \vspace{2ex}
+
+    cached が repository の状態に戻る
+  }
+
+  \onslide*<7-8>{
+    \$ git checkout c
+
+    \onslide<8>{
+      \vspace{2ex}
+
+      workspace が cached の状態に戻る
+    }
+  }
+
+\end{frame}
