@@ -2,74 +2,37 @@
 % Copyright 2014, 2020 Yoshida Shin.
 % See the file slide.tex for copying conditions.
 
-\begin{frame}<1-6>[t]{status}{レポジトリの状態を確認する}
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  workspace, cached の変更
+  \vspace{2ex}
+
+  \$ touch f g
+
+  \$ git add f
+
+  \$ echo 'test' \textgreater f
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
 
   現在の cached の状態を確認
   \vspace{4ex}
 
-  \onslide*<1>{
-    workspace, cached の変更
-    \vspace{2ex}
+  \$ git status
+  \vspace{2ex}
 
-    \$ touch f g
-
-    \$ git add f
-
-    \$ echo 'test' \textgreater f
-  }
-
-  \onslide*<2>{
-    \$ git status
-    \vspace{2ex}
-
-
-    \code{{\scriptsize
-        Changes to be committed:
-
-        ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
-        \vspace{1.5ex}
-
-        ~~~~~~~~new file: f
-        \vspace{1.5ex}
-
-        Changes not staged for commit:
-
-        ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
-
-        ~~(use ”git checkout {\dhyphen} {\textless}file{\textgreater}...” to discard changes in working directory)
-        \vspace{1.5ex}
-
-        ~~~~~~~~modified: f
-        \vspace{1.5ex}
-
-        Untracked files:
-
-        ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
-        \vspace{1.5ex}
-
-        ~~~~~~~~g
-      }}
-  }
-
-  \onslide*<3>{
-    上から、HEAD, cached 間の差分
-    \vspace{2ex}
-
-    \code{
+  \code{{\scriptsize
       Changes to be committed:
 
       ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
       \vspace{1.5ex}
 
       ~~~~~~~~new file: f
-    }
-  }
+      \vspace{1.5ex}
 
-  \onslide*<4>{
-    workspace と cached の差分
-    \vspace{2ex}
-
-    \code{
       Changes not staged for commit:
 
       ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
@@ -78,36 +41,6 @@
       \vspace{1.5ex}
 
       ~~~~~~~~modified: f
-    }
-  }
-
-  \onslide*<5>{
-    cached にも HEAD にも無いファイル
-    \vspace{2ex}
-
-    \code{
-      Untracked files:
-
-      ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
-      \vspace{1.5ex}
-
-      ~~~~~~~~g
-    }
-  }
-
-  \onslide*<6>{
-    \$ git add f
-
-    \$ git status
-    \vspace{2ex}
-
-    \code{
-      Changes to be committed:
-
-      ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
-      \vspace{1.5ex}
-
-      ~~~~~~~~new file: f
       \vspace{1.5ex}
 
       Untracked files:
@@ -116,9 +49,89 @@
       \vspace{1.5ex}
 
       ~~~~~~~~g
-    }
-    \vspace{2ex}
+  }}
 
-    workspace と cached の差分が無くなる
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  上から、HEAD, cached 間の差分
+  \vspace{2ex}
+
+  \code{
+    Changes to be committed:
+
+    ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
+    \vspace{1.5ex}
+
+    ~~~~~~~~new file: f
   }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  workspace と cached の差分
+  \vspace{2ex}
+
+  \code{
+    Changes not staged for commit:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
+
+    ~~(use ”git checkout {\dhyphen} {\textless}file{\textgreater}...” to discard changes in working directory)
+    \vspace{1.5ex}
+
+    ~~~~~~~~modified: f
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  cached にも HEAD にも無いファイル
+  \vspace{2ex}
+
+  \code{
+    Untracked files:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
+    \vspace{1.5ex}
+
+    ~~~~~~~~g
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  \$ git add f
+
+  \$ git status
+  \vspace{2ex}
+
+  \code{
+    Changes to be committed:
+
+    ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
+    \vspace{1.5ex}
+
+    ~~~~~~~~new file: f
+    \vspace{1.5ex}
+
+    Untracked files:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
+    \vspace{1.5ex}
+
+    ~~~~~~~~g
+  }
+  \vspace{2ex}
+
+  workspace と cached の差分が無くなる
+
 \end{frame}
