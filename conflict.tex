@@ -255,3 +255,35 @@
     merge 成功
   }
 \end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  この方法でも難しい場合、現在の local branch を一旦捨てるのも良いかもしれない
+  \vspace{4ex}
+
+  \onslide*<2>{目的は git の高度なテクニックを駆使することではない}
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  \$ cp f /tmp/f
+
+  \$ git reset {\dhyphen}hard remotes/origin/master
+
+  \$ vi f
+  \vspace{2ex}
+
+  \begin{enumerate}
+  \item ローカルの更新のバックアップをとる
+  \item local branch を捨て、remote の最新状態にする
+  \item バックアップを参考に f を正しい状態にする
+  \end{enumerate}
+  \vspace{2ex}
+
+  この後で再度 commit すれば衝突しない
+  \vspace{2ex}
+
+  \onslide*<2>{
+    remote に push していない更新が多いと、この作業は複雑になるので注意
+  }
+\end{frame}
