@@ -3,6 +3,93 @@
 % See the file slide.tex for copying conditions.
 
 \begin{frame}[t]{diff}{レポジトリの状態を確認する}
+  git diff は workspace, cached, commit 間の差分をパッチレベルで表示
+  \vspace{4ex}
+
+  「何の差分を見るか」を指定するオプションが少し複雑
+  \vspace{4ex}
+
+  どの状態とどの状態の差分か?
+  \begin{itemize}
+  \item workspace
+  \item cached
+  \item commit
+  \end{itemize}
+  (デフォルトでは workspace と cached の差分)
+
+  \vspace{2ex}
+
+  どのファイルの差分か?
+
+  (デフォルトでは git が管理下の全ファイルの差分)
+\end{frame}
+
+
+\begin{frame}[t]{diff}{レポジトリの状態を確認する}
+
+  どの状態とどの状態の差分か?
+  \vspace{4ex}
+
+  \begin{itemize}
+  \item 指定が無いと、workspace と cached の差分
+  \item 1 個だけ指定すると、workspace と指定した状態の差分
+  \item 2 個指定すると、指定した状態間の差分
+  \end{itemize}
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{レポジトリの状態を確認する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e f g
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e f
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (7em, 11ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+
+        \node (c2) [commit, rectangle split, rectangle split parts=3] at (9em, -1ex){
+          \commitmessage{Add e.}
+          \nodepart{second}{d e}
+          \nodepart{third}{3658...}
+        };
+
+        \node (c3) [commit, rectangle split, rectangle split parts=1] at (0em, -2ex){
+          \commitmessage{Add c.}
+        };
+
+        \draw (c1) -- (c2);
+        \draw (c1) -- (c3);
+
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  HEAD と cached の差分: f の有無
+
+  workspace と cached の差分: g の有無
+\end{frame}
+
+
+\begin{frame}[t]{diff}{レポジトリの状態を確認する}
 
   workspace, cached, commit 間の差分をパッチレベルで表示
   \vspace{4ex}
