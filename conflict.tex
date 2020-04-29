@@ -272,7 +272,7 @@
 
 
 \begin{frame}[t]{衝突}{更新が競合したら}
-  この方法でも難しい場合、現在の local branch を一旦捨てるのも良いかもしれない
+  この方法でも難しい場合、現在の branch を一旦捨てるのも良いかもしれない
   \vspace{4ex}
 
   \onslide*<2>{目的は git の高度なテクニックを駆使することではない}
@@ -280,16 +280,18 @@
 
 
 \begin{frame}[t]{衝突}{更新が競合したら}
+  \$ git checkout conflict2
+
   \$ cp f /tmp/f
 
-  \$ git reset {\dhyphen}hard remotes/origin/master
+  \$ git checkout conflict1
 
   \$ vi f
   \vspace{2ex}
 
   \begin{enumerate}
-  \item ローカルの更新のバックアップをとる
-  \item local branch を捨て、remote の最新状態にする
+  \item conflict2 の更新のバックアップをとる
+  \item HEAD を conflict1 に変更する
   \item バックアップを参考に f を正しい状態にする
   \end{enumerate}
   \vspace{2ex}
