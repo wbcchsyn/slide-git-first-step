@@ -2,10 +2,54 @@
 % Copyright 2014, 2020 Yoshida Shin.
 % See the file slide.tex for copying conditions.
 
-\begin{frame}[t]{衝突 (一旦停止)}{更新が競合したら}
-
-  merge を一旦停止して、解決してから　再 merge
+\begin{frame}[t]{衝突}{更新が競合したら}
+  git push の際に更新が競合する場合は、local で merge してから再 push すれば良い
   \vspace{4ex}
+
+  local の merge が衝突したらどうするか？
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  衝突した場合、直前のコマンドに ``{\dhyphen}abort'' オプションをつけると直前のコマンド実行前の状態に戻れる事が多い
+  \vspace{4ex}
+
+  ex)
+  merge コマンドで衝突が発生してから実行前の状態に戻す
+
+  \$ git merge remotes/origin/master (衝突)
+
+  \$ git merge {\dhyphen}abort
+  \vspace{4ex}
+
+  衝突を起こすコマンドとしては merge が有名だが、checkout などでも発生する可能性あり
+
+  いずれにしても、``{\dhyphen}abort'' オプションで直前のコマンドをキャンセル可能
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  git merge が衝突した場合、対応方法は大きく以下の 2 通り
+  \vspace{2ex}
+
+  \begin{itemize}
+  \item その場で衝突を解決して、merge を実行
+  \item merge を一旦中断して、衝突しないようにしてから再度 merge を実行
+  \end{itemize}
+  \vspace{4ex}
+
+  \onslide*<2>{
+    「その場で衝突を解決して、merge を実行」の方法は後で履歴を追うことが難しくなる
+
+    evil merge (邪悪な merge) と呼ばれ嫌われている
+    \vspace{2ex}
+
+    常に「merge を一旦中断して、衝突しないようにしてから再度 merge を実行」の方法を取るべき
+  }
+\end{frame}
+
+
+\begin{frame}[t]{衝突 (一旦停止)}{更新が競合したら}
 
   \onslide*<1>{
     準備
@@ -52,13 +96,22 @@
   }
 
   \onslide*<5>{
+    何が衝突したか、ここで確認しても良い
+    \vspace{2ex}
+
+    \$ git status
+
+    \$ git diff
+  }
+
+  \onslide*<6>{
     merge を一旦停止
     \vspace{2ex}
 
     \$ git merge {\dhyphen}abort
   }
 
-  \onslide*<6>{
+  \onslide*<7>{
     衝突しない様に編集、commit してから再度 merge
     \vspace{2ex}
 
@@ -96,34 +149,34 @@
     \begin{widecolumn}
 
       \begin{repository}{repository}
-        \onslide<14->{
+        \onslide<15->{
           \node (c13) [commit, rectangle split, rectangle split parts=2] at (3em, 14ex){
             \commitmessage{Merge bra...}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<14->{
+        \onslide*<15->{
           \node (c12) [commit, rectangle split, rectangle split parts=1] at (3em, 8ex){
             \commitmessage{Escape conflict.}
           };
         }
 
-        \onslide*<12-13>{
+        \onslide*<13-14>{
           \node (c12) [commit, rectangle split, rectangle split parts=2] at (3em, 10ex){
             \commitmessage{Escape conflict.}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<6-11>{
+        \onslide*<6-12>{
           \node (c11) [commit, rectangle split, rectangle split parts=2] at (3em, 6ex){
             \commitmessage{Update 2.}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<12->{
+        \onslide*<13->{
           \node (c11) [commit, rectangle split, rectangle split parts=1] at (3em, 4ex){
             \commitmessage{Update 2.}
           };
@@ -140,9 +193,9 @@
           \commitmessage{Merge remote-tracking branch ...}
         };
 
-        \onslide*<14->{\draw (c12) -- (c13);}
-        \onslide*<14->{\draw (c10) -- (c13);}
-        \onslide*<12->{\draw (c11) -- (c12);}
+        \onslide*<15->{\draw (c12) -- (c13);}
+        \onslide*<15->{\draw (c10) -- (c13);}
+        \onslide*<13->{\draw (c11) -- (c12);}
         \onslide*<6->{\draw (c9) -- (c11);}
         \onslide*<4->{\draw (c9) -- (c10);}
       \end{repository}
@@ -186,13 +239,21 @@
     workspace に無理矢理両方の更新を適用した状態
   }
 
-  \onslide*<9-10>{
+  \onslide*<9>{
+    \$ git status
+
+    \$ git diff
+
+    何が衝突したか、確認する
+  }
+
+  \onslide*<10-11>{
     \$ git merge {\dhyphen}abort
 
     前回の git merge を行う前の状態に戻す
   }
 
-  \onslide*<11-12>{
+  \onslide*<12-13>{
     \$ vi f
 
     \$ git add f
@@ -202,9 +263,43 @@
     conflict を起こさないように f を修正
   }
 
-  \onslide*<13-14>{
+  \onslide*<14-15>{
     \$ git merge conflict1
 
     merge 成功
+  }
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  この方法でも難しい場合、現在の branch を一旦捨てるのも良いかもしれない
+  \vspace{4ex}
+
+  \onslide*<2>{目的は git の高度なテクニックを駆使することではない}
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  \$ git checkout conflict2
+
+  \$ cp f /tmp/f
+
+  \$ git checkout conflict1
+
+  \$ vi f
+  \vspace{2ex}
+
+  \begin{enumerate}
+  \item conflict2 の更新のバックアップをとる
+  \item HEAD を conflict1 に変更する
+  \item バックアップを参考に f を正しい状態にする
+  \end{enumerate}
+  \vspace{2ex}
+
+  この後で再度 commit すれば衝突しない
+  \vspace{2ex}
+
+  \onslide*<2>{
+    remote に push していない更新が多いと、この作業は複雑になるので注意
   }
 \end{frame}
