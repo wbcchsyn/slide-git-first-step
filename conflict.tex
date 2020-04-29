@@ -99,13 +99,22 @@
   }
 
   \onslide*<5>{
+    何が衝突したか、ここで確認しても良い
+    \vspace{2ex}
+
+    \$ git status
+
+    \$ git diff
+  }
+
+  \onslide*<6>{
     merge を一旦停止
     \vspace{2ex}
 
     \$ git merge {\dhyphen}abort
   }
 
-  \onslide*<6>{
+  \onslide*<7>{
     衝突しない様に編集、commit してから再度 merge
     \vspace{2ex}
 
@@ -143,34 +152,34 @@
     \begin{widecolumn}
 
       \begin{repository}{repository}
-        \onslide<14->{
+        \onslide<15->{
           \node (c13) [commit, rectangle split, rectangle split parts=2] at (3em, 14ex){
             \commitmessage{Merge bra...}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<14->{
+        \onslide*<15->{
           \node (c12) [commit, rectangle split, rectangle split parts=1] at (3em, 8ex){
             \commitmessage{Escape conflict.}
           };
         }
 
-        \onslide*<12-13>{
+        \onslide*<13-14>{
           \node (c12) [commit, rectangle split, rectangle split parts=2] at (3em, 10ex){
             \commitmessage{Escape conflict.}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<6-11>{
+        \onslide*<6-12>{
           \node (c11) [commit, rectangle split, rectangle split parts=2] at (3em, 6ex){
             \commitmessage{Update 2.}
             \nodepart{second}{conflict2}
           };
         }
 
-        \onslide*<12->{
+        \onslide*<13->{
           \node (c11) [commit, rectangle split, rectangle split parts=1] at (3em, 4ex){
             \commitmessage{Update 2.}
           };
@@ -187,9 +196,9 @@
           \commitmessage{Merge remote-tracking branch ...}
         };
 
-        \onslide*<14->{\draw (c12) -- (c13);}
-        \onslide*<14->{\draw (c10) -- (c13);}
-        \onslide*<12->{\draw (c11) -- (c12);}
+        \onslide*<15->{\draw (c12) -- (c13);}
+        \onslide*<15->{\draw (c10) -- (c13);}
+        \onslide*<13->{\draw (c11) -- (c12);}
         \onslide*<6->{\draw (c9) -- (c11);}
         \onslide*<4->{\draw (c9) -- (c10);}
       \end{repository}
@@ -233,13 +242,21 @@
     workspace に無理矢理両方の更新を適用した状態
   }
 
-  \onslide*<9-10>{
+  \onslide*<9>{
+    \$ git status
+
+    \$ git diff
+
+    何が衝突したか、確認する
+  }
+
+  \onslide*<10-11>{
     \$ git merge {\dhyphen}abort
 
     前回の git merge を行う前の状態に戻す
   }
 
-  \onslide*<11-12>{
+  \onslide*<12-13>{
     \$ vi f
 
     \$ git add f
@@ -249,7 +266,7 @@
     conflict を起こさないように f を修正
   }
 
-  \onslide*<13-14>{
+  \onslide*<14-15>{
     \$ git merge conflict1
 
     merge 成功
