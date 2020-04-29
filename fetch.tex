@@ -147,3 +147,17 @@
     master に remotes/origin/master の更新を適用
   }
 \end{frame}
+
+
+\begin{frame}[t]{fetch コマンド補足}{複数人で開発する}
+
+  git fetch [{\dhyphen}all] [-p]
+
+  \begin{itemize}
+  \item {\dhyphen}all は全ての remotes 以下の branch を最新にする
+
+    (local に存在しない branch は新規作成する)
+  \item -p は remote reopsitory から削除された branch を local からも削除する
+  \item git pull のデフォルトの動作は、git fetch と git merge を行うもの
+  \end{itemize}
+\end{frame}
