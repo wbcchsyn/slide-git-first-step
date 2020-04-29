@@ -165,6 +165,51 @@
 \end{frame}
 
 
+\begin{frame}[t]{中で起きている事}{レポジトリの状態を確認する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e \color{red}f \color{black} g
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e \onslide*<3>{\color{red}}f \color{black}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ git add f
+  }
+  \vspace{2ex}
+
+  \onslide*<3>{
+    HEAD と cached の差分: f の有無
+
+    workspace と cached の差分: g の有無
+  }
+
+\end{frame}
+
+
 \begin{frame}[t]{status}{レポジトリの状態を確認する}
 
   \$ git status
