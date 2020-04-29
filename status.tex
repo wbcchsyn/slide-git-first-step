@@ -2,74 +2,86 @@
 % Copyright 2014, 2020 Yoshida Shin.
 % See the file slide.tex for copying conditions.
 
-\begin{frame}<1-6>[t]{status}{レポジトリの状態を確認する}
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
 
-  現在の cached の状態を確認
-  \vspace{4ex}
+  workspace, cached の変更
+  \vspace{2ex}
 
-  \onslide*<1>{
-    workspace, cached の変更
-    \vspace{2ex}
+  \$ touch f g
 
+  \$ git add f
+
+  \$ echo 'test' \textgreater f
+
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{レポジトリの状態を確認する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e \onslide<3>{\color{red}f \color{black} g}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e \onslide<3>{f}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
     \$ touch f g
 
     \$ git add f
 
     \$ echo 'test' \textgreater f
   }
-
-  \onslide*<2>{
-    \$ git status
-    \vspace{2ex}
-
-
-    \code{{\scriptsize
-        Changes to be committed:
-
-        ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
-        \vspace{1.5ex}
-
-        ~~~~~~~~new file: f
-        \vspace{1.5ex}
-
-        Changes not staged for commit:
-
-        ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
-
-        ~~(use ”git checkout {\dhyphen} {\textless}file{\textgreater}...” to discard changes in working directory)
-        \vspace{1.5ex}
-
-        ~~~~~~~~modified: f
-        \vspace{1.5ex}
-
-        Untracked files:
-
-        ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
-        \vspace{1.5ex}
-
-        ~~~~~~~~g
-      }}
-  }
+  \vspace{2ex}
 
   \onslide*<3>{
-    上から、HEAD, cached 間の差分
-    \vspace{2ex}
+    HEAD と cached の差分: f の有無
 
-    \code{
+    workspace と cached の差分: f の中身、g の有無
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  現在の cached の状態を確認
+  \vspace{4ex}
+
+  \$ git status
+  \vspace{2ex}
+
+  \code{{\scriptsize
       Changes to be committed:
 
       ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
       \vspace{1.5ex}
 
       ~~~~~~~~new file: f
-    }
-  }
+      \vspace{1.5ex}
 
-  \onslide*<4>{
-    workspace と cached の差分
-    \vspace{2ex}
-
-    \code{
       Changes not staged for commit:
 
       ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
@@ -78,47 +90,149 @@
       \vspace{1.5ex}
 
       ~~~~~~~~modified: f
-    }
-  }
+      \vspace{1.5ex}
 
-  \onslide*<5>{
-    cached にも HEAD にも無いファイル
-    \vspace{2ex}
-
-    \code{
       Untracked files:
 
       ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
       \vspace{1.5ex}
 
       ~~~~~~~~g
-    }
+  }}
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  上から、HEAD, cached 間の差分
+  \vspace{2ex}
+
+  \code{
+    Changes to be committed:
+
+    ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
+    \vspace{1.5ex}
+
+    ~~~~~~~~new file: f
   }
 
-  \onslide*<6>{
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  workspace と cached の差分
+  \vspace{2ex}
+
+  \code{
+    Changes not staged for commit:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to update what will be committed)
+
+    ~~(use ”git checkout {\dhyphen} {\textless}file{\textgreater}...” to discard changes in working directory)
+    \vspace{1.5ex}
+
+    ~~~~~~~~modified: f
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  cached にも HEAD にも無いファイル
+  \vspace{2ex}
+
+  \code{
+    Untracked files:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
+    \vspace{1.5ex}
+
+    ~~~~~~~~g
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  workspace の f の更新内容を cached に反映する
+  \vspace{4ex}
+
+  \$ git add f
+\end{frame}
+
+
+\begin{frame}[t]{中で起きている事}{レポジトリの状態を確認する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e \color{red}f \color{black} g
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e \onslide*<3>{\color{red}}f \color{black}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
     \$ git add f
-
-    \$ git status
-    \vspace{2ex}
-
-    \code{
-      Changes to be committed:
-
-      ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
-      \vspace{1.5ex}
-
-      ~~~~~~~~new file: f
-      \vspace{1.5ex}
-
-      Untracked files:
-
-      ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
-      \vspace{1.5ex}
-
-      ~~~~~~~~g
-    }
-    \vspace{2ex}
-
-    workspace と cached の差分が無くなる
   }
+  \vspace{2ex}
+
+  \onslide*<3>{
+    HEAD と cached の差分: f の有無
+
+    workspace と cached の差分: g の有無
+  }
+
+\end{frame}
+
+
+\begin{frame}[t]{status}{レポジトリの状態を確認する}
+
+  \$ git status
+  \vspace{2ex}
+
+  \code{
+    Changes to be committed:
+
+    ~~(use ”git reset HEAD {\textless}file{\textgreater}...” to unstage)
+    \vspace{1.5ex}
+
+    ~~~~~~~~new file: f
+    \vspace{1.5ex}
+
+    Untracked files:
+
+    ~~(use ”git add {\textless}file{\textgreater}...” to include in what will be committed)
+    \vspace{1.5ex}
+
+    ~~~~~~~~g
+  }
+  \vspace{2ex}
+
+  workspace と cached の差分が無くなる
+
 \end{frame}
