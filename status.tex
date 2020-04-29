@@ -16,6 +16,55 @@
 \end{frame}
 
 
+\begin{frame}[t]{中で起きている事}{レポジトリの状態を確認する}
+
+  \begin{columns}
+
+    \begin{narrowcolumn}
+
+      \begin{block}{workspace}
+        c d e \onslide<3>{\color{red}f \color{black} g}
+      \end{block}
+
+      \begin{block}{cached (index)}
+        c d e \onslide<3>{f}
+      \end{block}
+
+    \end{narrowcolumn}
+
+    \begin{widecolumn}
+
+      \begin{repository}{repository}
+        \node (c1) [commit, rectangle split, rectangle split parts=3] at (0em, 0ex) {
+          \commitmessage{Merge branch 'develop'}
+          \nodepart{second}{c d e}
+          \nodepart{third}{master{\HEAD}}
+        };
+      \end{repository}
+
+    \end{widecolumn}
+
+  \end{columns}
+  \vspace{2ex}
+
+  \onslide*<2-3>{
+    \$ touch f g
+
+    \$ git add f
+
+    \$ echo 'test' \textgreater f
+  }
+  \vspace{2ex}
+
+  \onslide*<3>{
+    HEAD と cached の差分: f の有無
+
+    workspace と cached の差分: f の中身、g の有無
+  }
+
+\end{frame}
+
+
 \begin{frame}[t]{status}{レポジトリの状態を確認する}
 
   現在の cached の状態を確認
