@@ -2,6 +2,53 @@
 % Copyright 2014, 2020 Yoshida Shin.
 % See the file slide.tex for copying conditions.
 
+\begin{frame}[t]{衝突}{更新が競合したら}
+  git push の際に更新が競合する場合は、local で merge してから再 push すれば良い
+  \vspace{4ex}
+
+  local の merge が衝突したらどうするか？
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  衝突した場合、直前のコマンドに ``{\dhyphen}abort'' オプションをつけると直前のコマンド実行前の状態に戻れる事が多い
+  \vspace{4ex}
+
+  ex)
+  merge コマンドで衝突が発生してから実行前の状態に戻す
+
+  \$ git merge remotes/origin/master
+
+  \$ git merge {\dhyphen}abort
+  \vspace{4ex}
+
+  衝突を起こすコマンドとしては merge が有名だが、checkout などでも発生する可能性あり
+
+  いずれにしても、``{\dhyphen}abort'' オプションで直前のコマンドをキャンセル可能
+\end{frame}
+
+
+\begin{frame}[t]{衝突}{更新が競合したら}
+  git merge が衝突した場合、対応方法は大きく以下の 2 通り
+  \vspace{2ex}
+
+  \begin{itemize}
+  \item その場で衝突を解決して、merge を実行
+  \item merge を一旦中断して、衝突しないようにしてから再度 merge を実行
+  \end{itemize}
+  \vspace{4ex}
+
+  \onslide*<2>{
+    「その場で衝突を解決して、merge を実行」の方法は後で履歴を追うことが難しくなる
+
+    evil merge (邪悪な merge) と呼ばれ嫌われている
+    \vspace{2ex}
+
+    常に「merge を一旦中断して、衝突しないようにしてから再度 merge を実行」の方法を取るべき
+  }
+\end{frame}
+
+
 \begin{frame}[t]{衝突 (一旦停止)}{更新が競合したら}
 
   merge を一旦停止して、解決してから　再 merge
